@@ -7,6 +7,9 @@ const signup = async (req, res) => {
     const checkUserName = await User.findOne({ username: data.username });
     // console.log(checkUserName);
     const checkEmail = await User.findOne({ email: data.email });
+    // console.log(checkEmail);
+
+    // ================= check duplicate username and email ===============
     if (checkUserName) {
       // console.log("username already exits");
       res.status(400).json({ message: "username already exits" });
