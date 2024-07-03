@@ -21,7 +21,11 @@ app.use("*", (req, res, next) => {
   //   const err = new Error(`Can't find ${req.originalUrl} on the server`);
   //   err.status = "fail";
   //   err.statusCode = 404;
-  const err = new ApiError(404, `Can't find ${req.originalUrl} on the server`);
+  const err = new ApiError(
+    404,
+    "fail",
+    `Can't find ${req.originalUrl} on the server`
+  );
   next(err);
 });
 

@@ -1,11 +1,14 @@
 import express from "express";
-import { signup } from "../controllers/user.controller.js";
+import { login, signup } from "../controllers/user.controller.js";
 const router = express.Router();
-import { signupValidation } from "../middlewares/validation.middleware.js";
+import { userValidation } from "../middlewares/validation.middleware.js";
 import { signUpSchema } from "../schemas/signup.schema.js";
+import loginSchema from "../schemas/login.schema.js";
 
 // ----------- Router ----------
-router.post("/signup", signupValidation(signUpSchema), signup);
+router.post("/signup", userValidation(signUpSchema), signup);
 // router.route("/signup").post(signup);
+router.post("/login", userValidation(loginSchema), login);
+// router.post("/login", login);
 
 export default router;

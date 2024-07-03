@@ -1,4 +1,4 @@
-const signupValidation = (schema) => async (req, res, next) => {
+const userValidation = (schema) => async (req, res, next) => {
   try {
     const parseBody = await schema.parseAsync(req.body);
     req.body = parseBody;
@@ -7,21 +7,21 @@ const signupValidation = (schema) => async (req, res, next) => {
     res.status(400).json({
       status: 400,
       statusInfo: "error",
-      message: err.errors[0].message,
+      response: err.errors[0].message,
     });
     // ------------------ 1st ----------------
-    // res.status(400).json({ stauts: 400, message: err.errors[0].message });
+    // res.status(400).json({ stauts: 400, response: err.errors[0].message });
 
     // ------------------ 2nd ----------------
     // res.status(400).json({
     //   status: 400,
-    //   message: err.errors[0].message,
-    //   errorInfo: err.errors.map((curElm) => curElm.message),
+    //   response: err.errors[0].response,
+    //   errorInfo: err.errors.map((curElm) => curElm.response),
     // });
 
     // ------------------ 3rd ----------------
-    // next({ status: 400, statusInfo: "Error", message: err.errors[0].message });
+    // next({ status: 400, statusInfo: "Error", response: err.errors[0].response });
   }
 };
 
-export { signupValidation };
+export { userValidation };

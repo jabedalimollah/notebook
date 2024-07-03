@@ -9,7 +9,7 @@ export default (requestHandler) => {
     //   res.status(error.status).json({
     //     status: error.status || 500,
     //     statusInfo: error.statusInfo || "Error",
-    //     message: error.message || "Internal Server Error",
+    //     response: error.response || "Internal Server Error",
     //   });
     // }
   };
