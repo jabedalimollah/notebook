@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import ApiError from "../utils/ApiError.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
+import { generateToken } from "../middlewares/auth.middleware.js";
 // ------------------ Sign Up -----------------
 const signup = asyncErrorHandler(async (req, res) => {
   // try {
@@ -27,10 +28,22 @@ const signup = asyncErrorHandler(async (req, res) => {
   } else {
     const newUser = new User(data);
     const response = await newUser.save();
+
+    // console.log(newPassword);
     // res.status(200).json(response);
-    res
-      .status(200)
-      .json({ status: 200, statusInfo: "success", response: response });
+    const payload = {
+      _id: response._id,
+      name: response.name,
+      username: response.username,
+      email: response.email,
+    };
+    const token = generateToken(payload);
+    res.status(200).json({
+      status: 200,
+      statusInfo: "success",
+      response: response,
+      token: token,
+    });
   }
   // if (checkUserName) {
   //   // console.log("username already exists");
@@ -74,24 +87,37 @@ const login = asyncErrorHandler(async (req, res) => {
   const { email, password } = req.body;
 
   // ---------- check email and password exists or not ---------
-  const response = await User.findOne({
-    email,
-    password,
-  });
+  // const response = await User.findOne({
+  //   email,
+  //   password,
+  // });
 
-  if (!response) {
-    // ****** throwing error in errorHandler.js file **********
+  const user = await User.findOne({ email: email });
+
+  if (!user || !(await user.comparePassword(password))) {
     throw {
-      status: 400,
+      status: 401,
       statusInfo: "error",
       response: "email or password doesn't exists",
     };
   }
+  // if (!response) {
+  // ****** throwing error in errorHandler.js file **********
 
+  // }
   // ------------------ response send -------------
+
+  const payload = {
+    _id: user._id,
+    name: user.name,
+    username: user.username,
+    email: user.email,
+  };
+  const token = generateToken(payload);
+
   res
     .status(200)
-    .json({ status: 200, statusInfo: "success", response: response });
+    .json({ status: 200, statusInfo: "success", response: user, token: token });
 });
 
 // ------------------------ Export ----------------

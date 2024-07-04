@@ -4,7 +4,7 @@ const router = express.Router();
 import { userValidation } from "../middlewares/validation.middleware.js";
 import { signUpSchema } from "../schemas/signup.schema.js";
 import loginSchema from "../schemas/login.schema.js";
-
+import { jwtAuthMiddleware } from "../middlewares/auth.middleware.js";
 // ----------- Router ----------
 router.post("/signup", userValidation(signUpSchema), signup);
 // router.route("/signup").post(signup);
