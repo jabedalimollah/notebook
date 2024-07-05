@@ -2,6 +2,7 @@ import { User } from "../models/user.model.js";
 import ApiError from "../utils/ApiError.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 import { generateToken } from "../middlewares/auth.middleware.js";
+import { encryPassword } from "../utils/hashPassword.js";
 // ------------------ Sign Up -----------------
 const signup = asyncErrorHandler(async (req, res) => {
   // try {
@@ -95,18 +96,14 @@ const login = asyncErrorHandler(async (req, res) => {
   const user = await User.findOne({ email: email });
 
   if (!user || !(await user.comparePassword(password))) {
+    // ****** throwing error in errorHandler.js file **********
     throw {
       status: 401,
       statusInfo: "error",
       response: "email or password doesn't exists",
     };
   }
-  // if (!response) {
-  // ****** throwing error in errorHandler.js file **********
-
-  // }
-  // ------------------ response send -------------
-
+  // ------------ Generate Token ----------
   const payload = {
     _id: user._id,
     name: user.name,
@@ -114,14 +111,85 @@ const login = asyncErrorHandler(async (req, res) => {
     email: user.email,
   };
   const token = generateToken(payload);
-
+  // ------------------ response send -------------
   res
     .status(200)
     .json({ status: 200, statusInfo: "success", response: user, token: token });
 });
 
+// -------------------- Reset Password -------------
+const resetPassword = asyncErrorHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const hashedPassword = await encryPassword(password);
+
+  const user = await User.findOneAndUpdate(
+    {
+      email: email,
+    },
+    {
+      password: hashedPassword,
+    },
+    {
+      new: true,
+    }
+  );
+  if (!user) {
+    throw new ApiError(404, "fail", "user not found");
+  } else {
+    res
+      .status(200)
+      .json({ status: 200, statusInfo: "success", response: user });
+  }
+});
+
+// ------------------ Update User Profile ----------------
+const updateUserProfile = asyncErrorHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const updateUser = await User.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+  if (!updateUser) {
+    throw new ApiError(404, "fail", "user not found");
+  }
+  res
+    .status(200)
+    .json({ status: 200, statusInfo: "success", response: updateUser });
+});
+
+// ----------------- Delete User Profile ------------------
+const deleteUserProfile = asyncErrorHandler(async (req, res) => {
+  const { id } = req.params;
+  const { password } = req.body;
+  const user = await User.findOne({ _id: id });
+
+  // ------------- user exist or not --------
+  if (!user) {
+    throw new ApiError(404, "fail", "user not found");
+  }
+
+  // ------------ Enter password before deleting account ----------
+  // -------------- compare password -----------------
+  const userPassword = await user.comparePassword(password);
+
+  // ------------- check password correct or wrong --------------
+  if (!userPassword) {
+    throw new ApiError(401, "fail", "wrong password");
+  }
+  const deleteUser = await User.findByIdAndDelete({ _id: id });
+
+  if (!deleteUser) {
+    throw new ApiError(404, "fail", "user not found");
+  }
+  res.status(200).json({
+    status: 200,
+    statusInfo: "success",
+    response: "account deleted successfully",
+  });
+});
+
 // ------------------------ Export ----------------
-export { signup, login };
+export { signup, login, resetPassword, updateUserProfile, deleteUserProfile };
 
 // const signup = async (req, res) => {
 //   try {
