@@ -6,8 +6,9 @@ const userValidation = (schema) => async (req, res, next) => {
   } catch (err) {
     res.status(400).json({
       status: 400,
-      statusInfo: "error",
-      response: err.errors[0].message,
+      statusInfo: "fail",
+      message: err.errors[0].message,
+      data: null,
     });
     // ------------------ 1st ----------------
     // res.status(400).json({ stauts: 400, response: err.errors[0].message });

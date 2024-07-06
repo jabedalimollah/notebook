@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 const updateUserSchema = z.object({
   // --------------- name -------------
   name: z
@@ -23,10 +24,10 @@ const updateUserSchema = z.object({
     .min(2, { message: "username must be at least 2 characters" })
     .max(20, { message: "username must be at maximum 20 characters" })
     .toLowerCase()
-    .regex(
-      /^[a-zA-Z0-9]{2,20}$/,
-      "username must not contain special characters"
-    )
+    // .regex(
+    //   /^[a-zA-Z0-9]{2,20}$/,
+    //   "username must not contain special characters"
+    // )
     .optional(),
 
   // --------------- email -------------

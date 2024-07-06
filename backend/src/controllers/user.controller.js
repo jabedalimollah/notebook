@@ -3,105 +3,58 @@ import ApiError from "../utils/ApiError.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 import { generateToken } from "../middlewares/auth.middleware.js";
 import { encryPassword } from "../utils/hashPassword.js";
-// ------------------ Sign Up -----------------
+import ApiResponse from "../utils/apiResponse.js";
+//=================== Sign Up ===================
 const signup = asyncErrorHandler(async (req, res) => {
-  // try {
-  const data = req.body;
-  const checkUserName = await User.findOne({ username: data.username });
-  // console.log(checkUserName);
-  const checkEmail = await User.findOne({ email: data.email });
-  // console.log(checkEmail);
+  const getData = req.body;
+  const checkUserName = await User.findOne({ username: getData.username });
+  const checkEmail = await User.findOne({ email: getData.email });
 
-  // ================= check duplicate username and email ===============
+  // ------------------ check duplicate username and email ------------------
   if (checkUserName || checkEmail) {
-    // console.log("username already exists");
-
-    // ****** throwing error in ApiError.js file **********
-    // throw new ApiError(400, "error", "username or email already exists");
-
-    // ****** throwing error in errorHandler.js file **********
-    throw {
-      status: 409,
-      statusInfo: "error",
-      response: "username or email already exists",
-    };
-    // res.status(400).json({ response: "username or email already exists" });
+    // ------------------ throwing error in ApiError.js file ------------------
+    throw new ApiError(400, "error", "username or email already exists");
   } else {
-    const newUser = new User(data);
-    const response = await newUser.save();
+    const newUser = new User(getData);
+    const data = await newUser.save();
 
-    // console.log(newPassword);
-    // res.status(200).json(response);
     const payload = {
-      _id: response._id,
-      name: response.name,
-      username: response.username,
-      email: response.email,
+      _id: data._id,
+      name: data.name,
+      username: data.username,
+      email: data.email,
     };
+    // -------------- Generate Token ----------------
     const token = generateToken(payload);
-    res.status(200).json({
-      status: 200,
-      statusInfo: "success",
-      response: response,
-      token: token,
-    });
+
+    // ------------- Password Remove ---------
+    const userData = data.toObject();
+    delete userData.password;
+    // res.status(200).json({
+    //   status: 200,
+    //   statusInfo: "success",
+    //   data: data,
+    //   token: token,
+    // });
+    res.status(200).json(new ApiResponse(200, userData, token, "success"));
   }
-  // if (checkUserName) {
-  //   // console.log("username already exists");
-
-  //   // ****** throwing error in ApiError.js file **********
-  //   // throw new ApiError(400, "error", "username already exists");
-
-  //   // ****** throwing error in errorHandler.js file **********
-  //   throw {
-  //     status: 400,
-  //     statusInfo: "error",
-  //     response: "username already exists",
-  //   };
-  //   // res.status(400).json({ response: "username already exists" });
-  // } else if (checkEmail) {
-  //   // console.log("email already exists");
-
-  //   // ****** throwing error in errorHandler.js file **********
-  //   throw {
-  //     status: 400,
-  //     statusInfo: "error",
-  //     response: "email already exists",
-  //   };
-  //   // res.status(400).json({ response: "email already exists" });
-  // } else {
-  //   const newUser = new User(data);
-  //   const response = await newUser.save();
-  //   // res.status(200).json(response);
-  //   res
-  //     .status(200)
-  //     .json({ status: 200, statusInfo: "success", response: response });
-  // }
-  // } catch (err) {
-  //   res.status(500).json({ error: "Sign Up problem" });
-  //   // console.log("sign up problem", err);
-  // }
 });
 
-// ------------------- Log in ---------------------
+// =================== Log in ===================
 const login = asyncErrorHandler(async (req, res) => {
   const { email, password } = req.body;
 
   // ---------- check email and password exists or not ---------
-  // const response = await User.findOne({
-  //   email,
-  //   password,
-  // });
-
   const user = await User.findOne({ email: email });
 
   if (!user || !(await user.comparePassword(password))) {
-    // ****** throwing error in errorHandler.js file **********
-    throw {
-      status: 401,
-      statusInfo: "error",
-      response: "email or password doesn't exists",
-    };
+    // ------------------ throwing error in errorHandler.js file ------------------
+    // throw {
+    //   status: 401,
+    //   statusInfo: "error",
+    //   response: "email or password doesn't exists",
+    // };
+    throw new ApiError(401, "error", "email or password doesn't exists");
   }
   // ------------ Generate Token ----------
   const payload = {
@@ -111,13 +64,17 @@ const login = asyncErrorHandler(async (req, res) => {
     email: user.email,
   };
   const token = generateToken(payload);
+  // ------------ Password Remove ----------
+  const userData = user.toObject();
+  delete userData.password;
   // ------------------ response send -------------
-  res
-    .status(200)
-    .json({ status: 200, statusInfo: "success", response: user, token: token });
+  res.status(200).json(new ApiResponse(200, userData, token, "success"));
+  // res
+  //   .status(200)
+  //   .json({ status: 200, statusInfo: "success", response: user, token: token });
 });
 
-// -------------------- Reset Password -------------
+// =================== Reset Password ===================
 const resetPassword = asyncErrorHandler(async (req, res) => {
   const { email, password } = req.body;
   const hashedPassword = await encryPassword(password);
@@ -138,26 +95,65 @@ const resetPassword = asyncErrorHandler(async (req, res) => {
   } else {
     res
       .status(200)
-      .json({ status: 200, statusInfo: "success", response: user });
+      .json(
+        new ApiResponse(
+          200,
+          null,
+          null,
+          "success",
+          "password changed successfully"
+        )
+      );
+    // res.status(200).json(new ApiResponse(200, user));
+    // res
+    //   .status(200)
+    //   .json({ status: 200, statusInfo: "success", response: user });
   }
 });
 
-// ------------------ Update User Profile ----------------
+// =================== Update User Profile ===================
 const updateUserProfile = asyncErrorHandler(async (req, res) => {
   const { id } = req.params;
 
+  // ---------------- Check username exist or not -----------------
+  const existUsername =
+    (await User.findOne({ username: req.body.username })) || {};
+  if (existUsername.username === (req.body.username || false)) {
+    throw new ApiError(401, "fail", "username already exist");
+  }
+  // ---------------- Check email exist or not ------------
+  const existEmail = (await User.findOne({ email: req.body.email })) || {};
+  if (existEmail.email === (req.body.email || false)) {
+    throw new ApiError(401, "fail", "email already exist");
+  }
   const updateUser = await User.findByIdAndUpdate(id, req.body, {
     new: true,
   });
+
   if (!updateUser) {
     throw new ApiError(404, "fail", "user not found");
   }
+  // ------------- Password Remove ----------
+  const userData = updateUser.toObject();
+  delete userData.password;
   res
     .status(200)
-    .json({ status: 200, statusInfo: "success", response: updateUser });
+    .json(
+      new ApiResponse(
+        200,
+        userData,
+        null,
+        "success",
+        "user details updated successfully"
+      )
+    );
+  // res.status(200).json(new ApiResponse(200, updateUser));
+  // res
+  //   .status(200)
+  //   .json({ status: 200, statusInfo: "success", response: updateUser });
 });
 
-// ----------------- Delete User Profile ------------------
+// =================== Delete User Profile ===================
 const deleteUserProfile = asyncErrorHandler(async (req, res) => {
   const { id } = req.params;
   const { password } = req.body;
@@ -170,6 +166,9 @@ const deleteUserProfile = asyncErrorHandler(async (req, res) => {
 
   // ------------ Enter password before deleting account ----------
   // -------------- compare password -----------------
+  if (!password) {
+    throw new ApiError(401, "fail", "please enter password correctly");
+  }
   const userPassword = await user.comparePassword(password);
 
   // ------------- check password correct or wrong --------------
@@ -181,38 +180,46 @@ const deleteUserProfile = asyncErrorHandler(async (req, res) => {
   if (!deleteUser) {
     throw new ApiError(404, "fail", "user not found");
   }
-  res.status(200).json({
-    status: 200,
-    statusInfo: "success",
-    response: "account deleted successfully",
-  });
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        null,
+        null,
+        "success",
+        "account deleted successfully"
+      )
+    );
+  // res.status(200).json({
+  //   status: 200,
+  //   statusInfo: "success",
+  //   response: "account deleted successfully",
+  // });
 });
 
-// ------------------------ Export ----------------
-export { signup, login, resetPassword, updateUserProfile, deleteUserProfile };
+// =================== Get User Profile ===================
+const getUserProfile = asyncErrorHandler(async (req, res) => {
+  const { id } = req.params;
+  const getUser = await User.findById({ _id: id });
 
-// const signup = async (req, res) => {
-//   try {
-//     const data = req.body;
-//     const checkUserName = await User.findOne({ username: data.username });
-//     // console.log(checkUserName);
-//     const checkEmail = await User.findOne({ email: data.email });
-//     // console.log(checkEmail);
+  if (!getUser) {
+    throw new ApiError(404, "fail", "user not found");
+  }
+  // ------------- Password Remove ----------
+  const userData = getUser.toObject();
+  delete userData.password;
 
-//     // ================= check duplicate username and email ===============
-//     if (checkUserName) {
-//       // console.log("username already exits");
-//       res.status(400).json({ response: "username already exits" });
-//     } else if (checkEmail) {
-//       // console.log("email already exits");
-//       res.status(400).json({ response: "email already exits" });
-//     } else {
-//       const newUser = new User(data);
-//       const response = await newUser.save();
-//       res.status(200).json(response);
-//     }
-//   } catch (err) {
-//     res.status(500).json({ error: "Sign Up problem" });
-//     // console.log("sign up problem", err);
-//   }
-// };
+  res.status(200).json(new ApiResponse(200, userData));
+  // res.status(200).json({ msg: "OK" });
+});
+
+// =================== Export ===================
+export {
+  signup,
+  login,
+  resetPassword,
+  updateUserProfile,
+  deleteUserProfile,
+  getUserProfile,
+};

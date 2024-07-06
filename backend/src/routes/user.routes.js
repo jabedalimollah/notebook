@@ -1,6 +1,7 @@
 import express from "express";
 import {
   deleteUserProfile,
+  getUserProfile,
   login,
   resetPassword,
   signup,
@@ -13,23 +14,35 @@ import loginSchema from "../schemas/login.schema.js";
 import { jwtAuthMiddleware } from "../middlewares/auth.middleware.js";
 import resetPasswordSchema from "../schemas/resetPassword.schema.js";
 import updateUserSchema from "../schemas/updateUser.schema.js";
-// ----------- Router ----------
-router.post("/signup", userValidation(signUpSchema), signup);
-// router.route("/signup").post(signup);
-router.post("/login", userValidation(loginSchema), login);
-// router.post("/login", login);
 
+// =============== Router ===============
+
+// --------------- signup --------------
+router.post("/signup", userValidation(signUpSchema), signup);
+
+// --------------- log in -------------
+router.post("/login", userValidation(loginSchema), login);
+
+// ------------- Reset Password ---------
 router.put(
   "/resetpassword",
   userValidation(resetPasswordSchema),
   resetPassword
 );
 
+// ------------- Update User Profile ----------
 router.put(
   "/updateuser/:id",
+  jwtAuthMiddleware,
   userValidation(updateUserSchema),
   updateUserProfile
 );
 
-router.delete("/deleteuser/:id", deleteUserProfile);
+// ---------------- Get User Profile ------------
+router.get("/userprofile/:id", jwtAuthMiddleware, getUserProfile);
+
+// ---------------- Delete User Profile ------------
+router.delete("/deleteuser/:id", jwtAuthMiddleware, deleteUserProfile);
+
+// --------------- Export Router --------------
 export default router;
