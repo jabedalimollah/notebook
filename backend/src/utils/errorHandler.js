@@ -2,7 +2,7 @@ const errorHandler = (err, req, res, next) => {
   // console.log("errorHandler", err);
 
   // err.status = err.status || 500;
-  err.status = err.message ? err.status : 500;
+  err.status = err.message ? (err.status ? err.status : 500) : 500;
   err.message = err.message || "Internal Server Error";
   err.statusInfo = err.statusInfo || "error";
   // err.data = err.data || null;
