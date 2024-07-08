@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import ApiError from "./utils/ApiError.js";
 import errorHandler from "./utils/errorHandler.js";
+import { jwtAuthMiddleware } from "./middlewares/auth.middleware.js";
 const app = express();
 
 // ----------- Middlewares ----------
@@ -14,7 +15,7 @@ import user from "./routes/user.routes.js";
 import notes from "./routes/notes.routes.js";
 // ----------- Routes declaration ---------
 app.use("/api/v1/user", user);
-app.use("/api/v1/notes", notes);
+app.use("/api/v1/notes", jwtAuthMiddleware, notes);
 // ----------- It is used for incorrect endpoint and wrong api requests ----------
 app.use("*", (req, res, next) => {
   // =============== x ==================
