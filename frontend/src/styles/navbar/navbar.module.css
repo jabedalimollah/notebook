@@ -1,0 +1,19 @@
+.main {
+  width: 100%;
+  height: 40px;
+}
+.main .header {
+  width: 100%;
+  height: 100%;
+  background-color: #d6efd8;
+  display: flex;
+  align-items: center;
+}
+.logo_box {
+  height: 90%;
+  width: 135px;
+  margin-left: 25px;
+}
+.logo {
+  width: 100%;
+}

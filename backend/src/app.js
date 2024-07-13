@@ -7,7 +7,12 @@ import { jwtAuthMiddleware } from "./middlewares/auth.middleware.js";
 const app = express();
 
 // ----------- Middlewares ----------
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  })
+);
 app.use(bodyParser.json());
 
 // --------- Import Routes -------------

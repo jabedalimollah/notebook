@@ -40,6 +40,13 @@ const updateUserSchema = z.object({
     .toLowerCase()
     .optional(),
 
+  // --------------- phone number -------------
+  phoneNumber: z
+    .string({
+      invalid_type_error: "phone number must be a string",
+    })
+    .optional(),
+
   // --------------- Theme Color -------------
   themeColor: z
     .string({ invalid_type_error: "them must be a string" })

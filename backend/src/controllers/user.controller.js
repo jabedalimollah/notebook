@@ -11,9 +11,11 @@ const signup = asyncErrorHandler(async (req, res) => {
   const checkEmail = await User.findOne({ email: getData.email });
 
   // ------------------ check duplicate username and email ------------------
-  if (checkUserName || checkEmail) {
+  if (checkUserName) {
     // ------------------ throwing error in ApiError.js file ------------------
-    throw new ApiError(400, "error", "username or email already exists");
+    throw new ApiError(400, "error", "username already exists");
+  } else if (checkEmail) {
+    throw new ApiError(400, "error", "email already exists");
   } else {
     const newUser = new User(getData);
     const data = await newUser.save();
