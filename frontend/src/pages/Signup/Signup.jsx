@@ -113,11 +113,17 @@ const Signup = () => {
 
     if (
       validName === false &&
+      !(data.name === "") &&
       validEmail === false &&
+      !(data.email === "") &&
       validUsername === false &&
+      !(data.username === "") &&
       validConfirmPassword === false &&
+      !(data.confirmPassword === "") &&
       validPassword === false &&
-      validPhoneNumber === false
+      !(data.password === "") &&
+      validPhoneNumber === false &&
+      !(data.phoneNumber === "")
     ) {
       handleApiCalling(data);
     }
@@ -476,7 +482,9 @@ export default Signup;
             />
           </label>
           {false ? (
-            <span className={`${styles.invalid_user}`}>Enter password</span>
+            <span className={`${styles.invalid_user}`}>
+              Enter minimum 8 charecter
+            </span>
           ) : null}
         </div>
 
@@ -491,7 +499,7 @@ export default Signup;
             />
           </label>
           {false ? (
-            <span className={`${styles.invalid_user}`}>Enter password</span>
+            <span className={`${styles.invalid_user}`}>Confirm password</span>
           ) : null}
         </div>
       </div>

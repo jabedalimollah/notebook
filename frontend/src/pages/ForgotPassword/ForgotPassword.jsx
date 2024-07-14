@@ -1,27 +1,32 @@
 import React, { useState } from "react";
-import logo from "/notebook.png";
-import { HiEyeOff } from "react-icons/hi";
 import { HiEye } from "react-icons/hi";
+import { HiEyeOff } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "../../styles/login/login.module.css";
+import logo from "/notebook.png";
+import styles from "../../styles/forgotPassword/forgotPassword.module.css";
 import { apiRoutes } from "@/utils/apiRoutes";
 import axios from "axios";
-const Login = () => {
-  // -------------------- State Start ------------------------
+
+const ForgotPassword = () => {
+  // ------------------------ State Start ----------------------
+  const [message, setMessage] = useState(false);
   const [data, setData] = useState({
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [validEmail, setValidEmail] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
+  const [validConfirmPassword, setValidConfirmPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState(false);
-  // ------------------ State End ------------------------
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  //   --------------------- State End ----------------------
   const navigate = useNavigate();
   const handleInputBox = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
-  const handleLogIn = () => {
+  const handleResetPassoword = () => {
     // =================== Email validation ===================
     const emailPattern =
       /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
@@ -30,37 +35,45 @@ const Login = () => {
     } else {
       setValidEmail(true);
     }
-
-    // ================== Password validation ===============
-    if (!(data.password === "")) {
+    // ==================== Password validation =====================
+    if (data.password.length >= 8) {
       setValidPassword(false);
     } else {
       setValidPassword(true);
     }
+
+    // =================== Confirm Password validation =================
+    if (data.password === data.confirmPassword) {
+      setValidConfirmPassword(false);
+    } else {
+      setValidConfirmPassword(true);
+    }
     if (
       validEmail === false &&
       !(data.email === "") &&
+      !(data.password === "") &&
       validPassword === false &&
-      !(data.password === "")
+      !(data.confirmPassword === "") &&
+      validConfirmPassword === false
     ) {
+      //   console.log(data);
       handleApiCalling(data);
     }
-    // console.log(data);
   };
+
   const handleApiCalling = async (data) => {
     try {
-      const response = await axios.post(apiRoutes.loginURI, data, {
+      const response = await axios.put(apiRoutes.resetpasswordURI, data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      // console.log("res", response.data.token);
-      localStorage.setItem("notebookToken", response.data.token);
+      //   console.log(response.data);
       setMessage(false);
-      navigate("/");
+      navigate("/login");
     } catch (error) {
-      // console.log("err", error.response.data.message);
-      if ("email or password doesn't exists" === error.response.data.message) {
+      //   console.log(error.response.data.message);
+      if (error.response.data.message === "user not found") {
         setMessage(true);
       }
     }
@@ -68,25 +81,19 @@ const Login = () => {
   return (
     <>
       <div className={`${styles.main}`}>
-        <div className={`${styles.login_container}`}>
+        <div className={`${styles.password_reset_container}`}>
           <div className={`${styles.logo_box}`}>
             <img src={logo} alt="logo" className={`${styles.logo}`} />
           </div>
-          <h2 className={`${styles.form_title}`}>Sign in to your account</h2>
+          <h2 className={`${styles.form_title}`}> Reset Your Password</h2>
           <form
             action=""
-            className={`${styles.login_form}`}
+            className={`${styles.password_reset_form}`}
             onSubmit={(e) => e.preventDefault()}
           >
             {message ? (
               <div className={`${styles.div_wrapper}`}>
-                {/* ===================== Email ======================= */}
-                {/* <div className={`${styles.form_input_box}`}>
-                <label htmlFor="" className={`${styles.form_data_wrapper}`}> */}
-                {/* <span className={`${styles.input_title}`}>Email</span> */}
                 <span className={`${styles.message}`}>User doesn't exist</span>
-                {/* </label>
-              </div> */}
               </div>
             ) : null}
             <div className={`${styles.div_wrapper}`}>
@@ -111,27 +118,10 @@ const Login = () => {
             </div>
 
             <div className={`${styles.div_wrapper}`}>
-              {/* ===================== Password ======================= */}
-              {/* <div className={`${styles.form_input_box}`}>
-                <label htmlFor="" className={`${styles.form_data_wrapper}`}>
-                  <span className={`${styles.input_title}`}>Password</span>
-
-                  <input
-                    type="password"
-                    placeholder="Enter your password"
-                    className={`${styles.input_box}`}
-                  />
-                </label>
-                {false ? (
-                  <span className={`${styles.invalid_user}`}>
-                    Enter password
-                  </span>
-                ) : null}
-              </div> */}
-              {/* ===================== Password ======================= */}
+              {/* ===================== New Password ======================= */}
               <div className={`${styles.form_input_box}`}>
                 <label htmlFor="" className={`${styles.form_data_wrapper}`}>
-                  <span className={`${styles.input_title}`}>Password</span>
+                  <span className={`${styles.input_title}`}>New Password</span>
                   <div className={`${styles.password_box}`}>
                     <input
                       type={showPassword ? "text" : "password"}
@@ -159,12 +149,51 @@ const Login = () => {
                 </label>
                 {validPassword ? (
                   <span className={`${styles.invalid_user}`}>
-                    *Please Enter Your Password
+                    *Enter minimum 8 charecter
                   </span>
                 ) : null}
               </div>
             </div>
-            <div className={`${styles.forgot_password_box}`}>
+            <div className={`${styles.div_wrapper}`}>
+              {/* ===================== Confirm Password ======================= */}
+              <div className={`${styles.form_input_box}`}>
+                <label htmlFor="" className={`${styles.form_data_wrapper}`}>
+                  <span className={`${styles.input_title}`}>
+                    Confirm Password
+                  </span>
+                  <div className={`${styles.password_box}`}>
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      name="confirmPassword"
+                      onChange={handleInputBox}
+                      className={`${styles.password_input_box}`}
+                    />
+                    {showConfirmPassword ? (
+                      <button
+                        className={`${styles.eye_botton}`}
+                        onClick={() => setShowConfirmPassword(false)}
+                      >
+                        <HiEyeOff />
+                      </button>
+                    ) : (
+                      <button
+                        className={`${styles.eye_botton}`}
+                        onClick={() => setShowConfirmPassword(true)}
+                      >
+                        <HiEye />
+                      </button>
+                    )}
+                  </div>
+                </label>
+                {validConfirmPassword ? (
+                  <span className={`${styles.invalid_user}`}>
+                    *Enter Same Password
+                  </span>
+                ) : null}
+              </div>
+            </div>
+            {/* <div className={`${styles.forgot_password_box}`}>
               <label htmlFor="checkbox" className={`${styles.remember_me}`}>
                 <input type="checkbox" name="checkbox" id="checkbox" />
                 <span className={`${styles.remember_me_text}`}>
@@ -177,23 +206,25 @@ const Login = () => {
               >
                 Forgot password?
               </Link>
-            </div>
+            </div> */}
             {/* <div className={`${styles.div_wrapper}`}> */}
             <div className={`${styles.form_input_box}`}>
               <button
-                className={`${styles.login_button}`}
-                onClick={handleLogIn}
+                className={`${styles.password_reset_button}`}
+                onClick={handleResetPassoword}
               >
-                Log in to your account
+                Reset Password
               </button>
             </div>
             {/* </div> */}
-            {/* <div className={`${styles.login_box}`}></div> */}
+            {/* <div className={`${styles.password_reset_box}`}></div> */}
             <div className={`${styles.login}`}>
               <span className={`${styles.login_wrapper}`}>
-                Don’t have an account yet?{" "}
-                <Link to="/signup" className={`${styles.login}`}>
-                  Sign up here
+                {/* Don’t have an account yet?{" "} */}
+                <Link to="/login" className={`${styles.login}`}>
+                  {/* Sign up here */}
+                  {/* Back */}
+                  Return to Login Page
                 </Link>
               </span>
             </div>
@@ -204,4 +235,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;
