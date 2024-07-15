@@ -1,0 +1,26 @@
+.background_color {
+  background-color: #eaf7dd;
+}
+
+.box_color {
+  background: #d6efd8;
+}
+
+.box_shadow {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.background_gradient_color {
+  /* background: rgb(217, 237, 219);
+  background: linear-gradient(
+    65deg,
+    rgba(217, 237, 219, 1) 61%,
+    rgba(238, 255, 245, 1) 61%
+  ); */
+  background: rgb(255, 0, 78);
+  background: linear-gradient(
+    33deg,
+    rgba(255, 0, 78, 1) 53%,
+    rgba(249, 250, 119, 1) 91%
+  );
+}

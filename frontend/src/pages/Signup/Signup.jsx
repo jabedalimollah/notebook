@@ -380,7 +380,7 @@ const Signup = () => {
             <div className={`${styles.login}`}>
               <span className={`${styles.login_wrapper}`}>
                 Already have an account?{" "}
-                <Link to="/login" className={`${styles.login}`}>
+                <Link to="/user/login" className={`${styles.login}`}>
                   Login here
                 </Link>
               </span>

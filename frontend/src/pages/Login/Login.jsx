@@ -172,7 +172,7 @@ const Login = () => {
                 </span>
               </label>
               <Link
-                to="/forgot_password"
+                to="/user/forgot_password"
                 className={`${styles.forgot_password_text}`}
               >
                 Forgot password?
@@ -192,7 +192,7 @@ const Login = () => {
             <div className={`${styles.login}`}>
               <span className={`${styles.login_wrapper}`}>
                 Don’t have an account yet?{" "}
-                <Link to="/signup" className={`${styles.login}`}>
+                <Link to="/user/signup" className={`${styles.login}`}>
                   Sign up here
                 </Link>
               </span>
