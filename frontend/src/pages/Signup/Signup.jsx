@@ -38,11 +38,9 @@ const Signup = () => {
     useState("");
   const [emailvalidationMessage, setEmailValidationMessage] = useState("");
 
-  const user = useSelector((state) => state.user.value);
-
   // 🚀🚀🚀🚀 ---------------- State End -------------------------
   // ============== dispatch ===========
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // -------------- navigate --------------
   const navigate = useNavigate();
@@ -142,7 +140,7 @@ const Signup = () => {
       // console.log(response.data);
       // console.log(response.data.token);
 
-      dispatch(getData(response.data));
+      // dispatch(getData(response.data));
       localStorage.setItem("notebookToken", response.data.token);
 
       navigate("/");

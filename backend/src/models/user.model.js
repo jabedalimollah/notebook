@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profilePic: {
+    type: String,
+    default: "/Images/Profile_Pictures/profile1.jpg",
+  },
   themeColor: {
     type: String,
     default: "#FFFFFF",

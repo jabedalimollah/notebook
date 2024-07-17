@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/login/login.module.css";
 import { apiRoutes } from "@/utils/apiRoutes";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { getData } from "@/features/user/userSlice";
 const Login = () => {
   // -------------------- State Start ------------------------
   const [data, setData] = useState({
@@ -17,6 +19,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState(false);
   // ------------------ State End ------------------------
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleInputBox = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -55,6 +58,7 @@ const Login = () => {
         },
       });
       // console.log("res", response.data.token);
+      // dispatch(getData(response.data.data._id));
       localStorage.setItem("notebookToken", response.data.token);
       setMessage(false);
       navigate("/");

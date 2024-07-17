@@ -128,7 +128,9 @@ const updateUserProfile = asyncErrorHandler(async (req, res) => {
   if (existEmail.email === (req.body.email || false)) {
     throw new ApiError(401, "fail", "email already exist");
   }
+
   const updateUser = await User.findByIdAndUpdate(id, req.body, {
+    returnNewDocument: true,
     new: true,
   });
 

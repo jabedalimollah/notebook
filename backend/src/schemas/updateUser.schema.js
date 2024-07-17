@@ -47,6 +47,9 @@ const updateUserSchema = z.object({
     })
     .optional(),
 
+  // ------------------ Profile Picture ----------------
+  profilePic: z.string().optional(),
+
   // --------------- Theme Color -------------
   themeColor: z
     .string({ invalid_type_error: "them must be a string" })
