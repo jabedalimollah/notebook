@@ -22,7 +22,7 @@ import { apiRoutes } from "@/utils/apiRoutes";
 import { jwtDecode } from "jwt-decode";
 import { getData } from "@/features/user/userSlice";
 import ChangeProfileImage from "@/components/ChangeProfileImage/ChangeProfileImage";
-import image from "../../db.json";
+// import image from "../../db.json";
 const UserProfile = () => {
   // ----------------------- State Start ---------------------
   // const [data, setData] = useState({});
@@ -236,7 +236,7 @@ const UserProfile = () => {
                         <PiGenderIntersexBold />
                         <span className={`hidden md:inline-block`}>Gender</span>
                       </td>
-                      <td className={`font-bold text-gray-500`}>
+                      <td className={`font-bold text-gray-500 capitalize`}>
                         {data.gender || "none"}
                         {/* Male */}
                       </td>
@@ -252,7 +252,7 @@ const UserProfile = () => {
                         </span>
                       </td>
                       <td className={`font-bold text-gray-500`}>
-                        {data.dob || "none"}
+                        {data.dateOfBirth || "none"}
                         {/* 08/10/2000 */}
                       </td>
                     </tr>
@@ -274,7 +274,7 @@ const UserProfile = () => {
                       <td className={`font-bold flex items-center gap-x-1`}>
                         <FaGlobe />
                         <span className={`hidden md:inline-block`}>
-                          Conuntry
+                          Country
                         </span>
                       </td>
                       <td className={`font-bold text-gray-500`}>

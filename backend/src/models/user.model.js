@@ -28,6 +28,19 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "/Images/Profile_Pictures/profile1.jpg",
   },
+  gender: {
+    type: String,
+  },
+  dateOfBirth: {
+    type: String,
+  },
+  country: {
+    type: String,
+    default: "India",
+  },
+  state: {
+    type: String,
+  },
   themeColor: {
     type: String,
     default: "#FFFFFF",

@@ -9,6 +9,7 @@ import Navbar from "./common/Navbar/Navbar";
 import Login from "./pages/Login/Login";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import UserProfile from "./pages/UserProfile/UserProfile";
+import EditProfile from "./pages/EditProfile/EditProfile";
 function App() {
   return (
     <>
@@ -20,6 +21,7 @@ function App() {
           <Route path="/user/login" element={<Login />} />
           <Route path="/user/forgot_password" element={<ForgotPassword />} />
           <Route path="/user/profile" element={<UserProfile />} />
+          <Route path="/user/edit_profile" element={<EditProfile />} />
         </Routes>
       </BrowserRouter>
     </>

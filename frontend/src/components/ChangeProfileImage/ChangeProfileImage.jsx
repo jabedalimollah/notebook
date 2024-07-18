@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import picturesData from "../../db.json";
+import picturesData from "../../database/picturesData.json";
 import { apiRoutes } from "@/utils/apiRoutes";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";

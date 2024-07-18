@@ -43,12 +43,30 @@ const updateUserSchema = z.object({
   // --------------- phone number -------------
   phoneNumber: z
     .string({
+      required_error: "phone number is required",
       invalid_type_error: "phone number must be a string",
     })
-    .optional(),
+    .min(6, { message: "phone number must be at least 6 numbers" })
+    .max(12, {
+      message: "phone number max 12 numbers",
+    }),
 
   // ------------------ Profile Picture ----------------
   profilePic: z.string().optional(),
+
+  // --------------------- Gender ---------------------
+  gender: z.string({ invalid_type_error: "them must be a string" }).optional(),
+
+  // ------------------ Date of Birth --------------
+  dateOfBirth: z
+    .string({ invalid_type_error: "them must be a string" })
+    .optional(),
+
+  // --------------------- Country -------------------
+  country: z.string({ invalid_type_error: "them must be a string" }).optional(),
+
+  // ------------------------- State -----------------
+  state: z.string({ invalid_type_error: "them must be a string" }).optional(),
 
   // --------------- Theme Color -------------
   themeColor: z
