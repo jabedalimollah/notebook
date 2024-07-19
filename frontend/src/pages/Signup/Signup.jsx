@@ -85,10 +85,11 @@ const Signup = () => {
     }
     // ==================== Phone Number Validation ================
     // const stringToNum = parseInt(data.phoneNumber, 10);
-    const phonenumberPattern = /^\D*(?:\d\D*){10,}$/;
+    const phonenumberPattern = /^\D*(?:\d\D*){06,12}$/;
     if (
       phonenumberPattern.test(data.phoneNumber) &&
-      data.phoneNumber.length === 10
+      data.phoneNumber.length >= 6 &&
+      data.phoneNumber.length <= 12
     ) {
       setValidPhoneNumber(false);
     } else {

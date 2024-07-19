@@ -74,6 +74,8 @@ const EditProfile = () => {
       let newData = { ...data };
       delete newData.email;
       updateUserData(newData);
+    } else {
+      updateUserData(data);
     }
   };
 
@@ -143,7 +145,7 @@ const EditProfile = () => {
       dispatch(getData(response.data.data));
       setData(response.data.data);
     } catch (error) {
-      console.log(error.response.data.message);
+      // console.log(error.response.data.message);
       setValidationMessage(error.response.data.message);
     }
   };

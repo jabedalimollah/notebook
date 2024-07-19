@@ -68,8 +68,8 @@ const UserProfile = () => {
 
   return (
     <>
-      {/* ======================== Back Button ==================== */}
       <div className={`w-full md:h-screen lg:h-screen background_color `}>
+        {/* ======================== Back Button ==================== */}
         <div
           className={`ml-3 md:ml-12 lg:ml-12 pt-4 pb-3 md:pb-0 lg:pb-0 md:pt-10 lg:pt-10`}
         >
@@ -80,7 +80,6 @@ const UserProfile = () => {
             <IoMdArrowBack className={`mr-2`} /> Back To Home
           </Link>
         </div>
-
         <div
           className={`w-full md:mt-16 lg:mt-0  flex justify-center items-center`}
         >

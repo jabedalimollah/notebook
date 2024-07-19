@@ -4,6 +4,8 @@ import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 import { generateToken } from "../middlewares/auth.middleware.js";
 import { encryPassword } from "../utils/hashPassword.js";
 import ApiResponse from "../utils/apiResponse.js";
+import { Notes } from "../models/notes.model.js";
+
 //=================== Sign Up ===================
 const signup = asyncErrorHandler(async (req, res) => {
   const getData = req.body;
@@ -180,10 +182,17 @@ const deleteUserProfile = asyncErrorHandler(async (req, res) => {
     throw new ApiError(401, "fail", "wrong password");
   }
   const deleteUser = await User.findByIdAndDelete({ _id: id });
+  let DeleteId = deleteUser._id.toString();
 
   if (!deleteUser) {
     throw new ApiError(404, "fail", "user not found");
   }
+
+  // ----------------- Delete All User Notes ----------------------
+  const deleteAllData = await Notes.deleteMany({
+    author: DeleteId,
+  });
+
   res
     .status(200)
     .json(

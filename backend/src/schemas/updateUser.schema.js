@@ -49,7 +49,8 @@ const updateUserSchema = z.object({
     .min(6, { message: "phone number must be at least 6 numbers" })
     .max(12, {
       message: "phone number max 12 numbers",
-    }),
+    })
+    .optional(),
 
   // ------------------ Profile Picture ----------------
   profilePic: z.string().optional(),

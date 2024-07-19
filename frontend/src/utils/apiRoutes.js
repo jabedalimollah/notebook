@@ -4,6 +4,7 @@ const apiRoutes = {
   resetpasswordURI: "http://localhost:8000/api/v1/user/resetpassword",
   userprofileURI: "http://localhost:8000/api/v1/user/userprofile",
   updateUserProfileURI: "http://localhost:8000/api/v1/user/updateuser",
+  deleteUserProfileURI: "http://localhost:8000/api/v1/user/deleteuser",
 };
 
 export { apiRoutes };

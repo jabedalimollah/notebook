@@ -18,9 +18,11 @@ app.use(bodyParser.json());
 // --------- Import Routes -------------
 import user from "./routes/user.routes.js";
 import notes from "./routes/notes.routes.js";
+
 // ----------- Routes declaration ---------
 app.use("/api/v1/user", user);
 app.use("/api/v1/notes", jwtAuthMiddleware, notes);
+
 // ----------- It is used for incorrect endpoint and wrong api requests ----------
 app.use("*", (req, res, next) => {
   // =============== x ==================
