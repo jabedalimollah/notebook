@@ -60,7 +60,7 @@ const UserProfile = () => {
   };
   const handleLogOutBtn = () => {
     localStorage.removeItem("notebookToken");
-    navigate("/user/signup");
+    navigate("/user/login");
   };
   useEffect(() => {
     handleApiCalling();
@@ -74,7 +74,7 @@ const UserProfile = () => {
           className={`ml-3 md:ml-12 lg:ml-12 pt-4 pb-3 md:pb-0 lg:pb-0 md:pt-10 lg:pt-10`}
         >
           <Link
-            to="/"
+            to="/user/notes"
             className={`text-emerald-950 font-medium flex items-center text-sm md:text-base lg:text-base  w-fit`}
           >
             <IoMdArrowBack className={`mr-2`} /> Back To Home

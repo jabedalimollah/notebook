@@ -32,3 +32,7 @@
     rgba(238, 255, 245, 1) 61%
   );
 }
+a.active {
+  background-color: rgb(22 163 74);
+  color: white;
+}
