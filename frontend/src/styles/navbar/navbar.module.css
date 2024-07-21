@@ -1,9 +1,10 @@
 .main {
   width: 100%;
   height: 40px;
-  /* z-index: 1000;
-  position: relative;
-  top: 0; */
+  z-index: 1000;
+  position: fixed;
+  left: 0;
+  top: 0;
   /* margin-bottom: 100px; */
 }
 .main .header {
@@ -20,4 +21,24 @@
 }
 .logo {
   width: 100%;
+}
+
+/* ============== Tablets and Desktop ============= */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  /* tablets and desktop */
+  .logo_box {
+    width: 100px;
+    margin-left: 25px;
+    height: auto;
+  }
+}
+
+/* ============== Phone ================ */
+@media only screen and (max-width: 767px) {
+  /* phones */
+  .logo_box {
+    height: auto;
+    width: 100px;
+    margin-left: 25px;
+  }
 }

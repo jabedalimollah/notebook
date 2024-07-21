@@ -5,6 +5,8 @@ const apiRoutes = {
   userprofileURI: "http://localhost:8000/api/v1/user/userprofile",
   updateUserProfileURI: "http://localhost:8000/api/v1/user/updateuser",
   deleteUserProfileURI: "http://localhost:8000/api/v1/user/deleteuser",
+
+  createNotesURI: "http://localhost:8000/api/v1/notes/postdata",
 };
 
 export { apiRoutes };

@@ -12,7 +12,7 @@ import { FaGlobe } from "react-icons/fa";
 const SidebarMenu = () => {
   return (
     <>
-      <div className={`w-2/12 h-dvh shadow-2xl background_gradient_color `}>
+      <div className={`w-2/12 h-full shadow-2xl background_gradient_color `}>
         <div className="w-full h-full flex flex-col justify-start gap-y-5 items-center ">
           <div className="w-full flex flex-col  items-center ">
             <div className="w-6/12 flex mt-8">
@@ -24,15 +24,23 @@ const SidebarMenu = () => {
                 />
               </Link>
             </div>
-            <div className="mt-4 mb-4">
+            <div className="mt-4 mb-4 flex flex-col items-center">
               <Link
                 to="/user/profile"
                 className="text-green-700 font-bold text-xl"
               >
                 Jabed Ali Mollah
               </Link>
+
+              <Link
+                to="/user/profile"
+                className="text-gray-600 font-bold text-base"
+              >
+                Profile
+              </Link>
             </div>
           </div>
+
           <div className="w-8/12 flex ">
             {/* <Link
               to="/user/notes"
@@ -86,6 +94,7 @@ const SidebarMenu = () => {
             </NavLink>
           </div>
           <div className="w-full flex flex-col gap-y-2 items-center mt-6 ">
+            <hr className="border border-green-700 mb-3 w-full" />
             <div className="text-xl text-green-700 font-bold">Follow Me</div>
             <div className="w-8/12 flex justify-center gap-x-2 text-2xl text-green-900 ">
               <a

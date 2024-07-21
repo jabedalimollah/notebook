@@ -158,7 +158,7 @@ const EditProfile = () => {
   return (
     <>
       <div
-        className={`w-full md:h-screen lg:h-screen background_color flex justify-center items-center `}
+        className={`w-full md:h-screen lg:h-screen background_color flex justify-center items-center  box-border pt-10`}
       >
         <div
           className={`w-10/12 md:w-8/10 lg:w-6/12 flex flex-col justify-center items-center py-8 background_gradient_color rounded-lg shadow-lg`}

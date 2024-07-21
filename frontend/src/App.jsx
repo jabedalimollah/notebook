@@ -15,6 +15,7 @@ import UserNotes from "./pages/UserNotes/UserNotes";
 import TodoList from "./pages/TodoList/TodoList";
 import About from "./pages/About/About";
 import ContactUs from "./pages/ContactUs/ContactUs";
+import CreateNotes from "./pages/CreateNotes/CreateNotes";
 function App() {
   return (
     <>
@@ -31,6 +32,7 @@ function App() {
           <Route path="/user/settings" element={<UserProfileSettings />} />
 
           <Route path="/user/notes" element={<UserNotes />} />
+          <Route path="/user/create_notest" element={<CreateNotes />} />
           <Route path="/user/todo_list" element={<TodoList />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact_us" element={<ContactUs />} />
