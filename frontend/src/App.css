@@ -32,11 +32,13 @@
     rgba(238, 255, 245, 1) 61%
   );
 }
+/* ------------- This is for Navbar active links ------------ */
 a.active {
   background-color: rgb(22 163 74);
   color: white;
 }
 
+/* -------------------- This is For Notebook line Style  --------------  */
 .textContent {
   margin-top: 5px;
   width: 96%;
@@ -73,4 +75,11 @@ textarea::-webkit-scrollbar-thumb {
   background-color: rgba(86, 88, 89, 0.467);
   cursor: pointer;
   /* outline: 1px solid slategrey; */
+}
+
+/* -------------- This is for text-overflow will add three dots at the end of the line ---------------- */
+.truncate {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

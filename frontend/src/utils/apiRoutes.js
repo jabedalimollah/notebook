@@ -7,6 +7,7 @@ const apiRoutes = {
   deleteUserProfileURI: "http://localhost:8000/api/v1/user/deleteuser",
 
   createNotesURI: "http://localhost:8000/api/v1/notes/postdata",
+  getNotesURI: "http://localhost:8000/api/v1/notes/getdata",
 };
 
 export { apiRoutes };
