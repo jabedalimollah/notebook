@@ -3,6 +3,8 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 const token = localStorage.getItem("notebookToken");
 const user = jwtDecode(token); // jwtDecode is for extract user id
+
+// ==================== Post Notes [create new notes] ===========================
 const PostNotes = async (data) => {
   try {
     // const token = localStorage.getItem("notebookToken");
@@ -15,6 +17,7 @@ const PostNotes = async (data) => {
   }
 };
 
+// ============================ Get All Notes ==================================
 const GetNotes = async () => {
   try {
     const response = await axios.get(`${apiRoutes.getNotesURI}/${user._id}`, {
@@ -27,4 +30,34 @@ const GetNotes = async () => {
   }
 };
 
-export { PostNotes, GetNotes };
+// ====================== Find One Notes ==================================
+const FindNotes = async (notesId) => {
+  try {
+    const response = await axios.get(`${apiRoutes.findNotesURI}/${notesId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    // console.log(response.data.data);
+    return await response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// ========================== Update Exist Notes =============================
+const UpdateNotesData = async (notesId, newData) => {
+  try {
+    const response = await axios.put(
+      `${apiRoutes.updateNotesURI}/${notesId}`,
+      newData,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    // console.log(response.data.data);
+    return await response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { PostNotes, GetNotes, FindNotes, UpdateNotesData };

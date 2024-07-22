@@ -16,6 +16,7 @@ import TodoList from "./pages/TodoList/TodoList";
 import About from "./pages/About/About";
 import ContactUs from "./pages/ContactUs/ContactUs";
 import CreateNotes from "./pages/CreateNotes/CreateNotes";
+import UpdateNotes from "./pages/UpdateNotes/UpdateNotes";
 function App() {
   return (
     <>
@@ -36,6 +37,10 @@ function App() {
           <Route path="/user/todo_list" element={<TodoList />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact_us" element={<ContactUs />} />
+          <Route
+            path="/user/update_notes/:notes_id"
+            element={<UpdateNotes />}
+          />
         </Routes>
       </BrowserRouter>
     </>

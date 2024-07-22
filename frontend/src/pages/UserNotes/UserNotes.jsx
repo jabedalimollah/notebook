@@ -111,7 +111,7 @@ const UserNotes = () => {
 
                     <div className="w-full flex justify-between mt-2">
                       <NavLink
-                        to={"/user/update_notes"}
+                        to={`/user/update_notes/${item._id}`}
                         className="flex items-center gap-x-1 text-gray-600 border border-gray-500  shadow-gray-300 shadow-md  px-1.5 py-0.5 rounded"
                       >
                         <RiEdit2Fill /> Edit
