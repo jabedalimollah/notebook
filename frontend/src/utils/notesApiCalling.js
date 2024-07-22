@@ -60,4 +60,20 @@ const UpdateNotesData = async (notesId, newData) => {
   }
 };
 
-export { PostNotes, GetNotes, FindNotes, UpdateNotesData };
+// ========================== Delete Exist Notes ========================
+const DeleteNotesData = async (notesId) => {
+  try {
+    const response = await axios.delete(
+      `${apiRoutes.deleteNotesURI}/${notesId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    // console.log(response);
+    return await response.data.statusInfo;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { PostNotes, GetNotes, FindNotes, UpdateNotesData, DeleteNotesData };

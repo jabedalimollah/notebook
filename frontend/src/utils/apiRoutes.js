@@ -10,6 +10,7 @@ const apiRoutes = {
   getNotesURI: "http://localhost:8000/api/v1/notes/getdata",
   findNotesURI: "http://localhost:8000/api/v1/notes/findnotes",
   updateNotesURI: "http://localhost:8000/api/v1/notes/updatedata",
+  deleteNotesURI: "http://localhost:8000/api/v1/notes/deletedata",
 };
 
 export { apiRoutes };

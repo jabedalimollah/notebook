@@ -9,11 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { allNotes } from "@/features/notes/notesSlice";
 import { RiEdit2Fill } from "react-icons/ri";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import DeleteNotes from "@/components/DeleteNotes/DeleteNotes";
 
 const UserNotes = () => {
   // --------------- State Start ------------------
   const [data, setData] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  const [deleteBtn, setDeleteBtn] = useState(false);
+  const [notesId, setNotesId] = useState(null);
   const notes = useSelector((state) => state.notes.value);
 
   // ------------------ State End -----------------
@@ -36,14 +39,15 @@ const UserNotes = () => {
         ) ||
         !(item.text.toLowerCase().indexOf(e.target.value.toLowerCase()) === -1)
       );
-      // ||
-      // !(
-      //   item.catagory.toLowerCase().indexOf(e.target.value.toLowerCase()) ===
-      //   -1
-      // )
     });
     // console.log(newData);
     setData(newData);
+  };
+
+  const handleDeleteBtn = async (id) => {
+    setDeleteBtn(!deleteBtn);
+    setNotesId(id);
+    setData(await GetNotes());
   };
   useEffect(() => {
     // setData(GetNotes());
@@ -112,11 +116,14 @@ const UserNotes = () => {
                     <div className="w-full flex justify-between mt-2">
                       <NavLink
                         to={`/user/update_notes/${item._id}`}
-                        className="flex items-center gap-x-1 text-gray-600 border border-gray-500  shadow-gray-300 shadow-md  px-1.5 py-0.5 rounded"
+                        className="flex items-center gap-x-1 text-gray-600 border border-gray-500  shadow-gray-300 shadow-md  px-1.5 py-0.5 rounded hover:bg-gray-500 hover:text-white"
                       >
                         <RiEdit2Fill /> Edit
                       </NavLink>
-                      <button className="flex items-center gap-x-1 text-red-400 border shadow-gray-300 shadow-md border-red-400 px-1.5 py-0.5 rounded">
+                      <button
+                        onClick={() => handleDeleteBtn(item._id)}
+                        className="flex items-center gap-x-1 text-red-400 border shadow-gray-300 shadow-md border-red-400 px-1.5 py-0.5 rounded hover:bg-red-400 hover:text-white"
+                      >
                         <RiDeleteBin5Fill /> Delete
                       </button>
                     </div>
@@ -131,6 +138,11 @@ const UserNotes = () => {
           </div>
         </div>
       </div>
+      {deleteBtn ? (
+        <DeleteNotes handleDeleteBtn={handleDeleteBtn} notesId={notesId} />
+      ) : (
+        ""
+      )}
     </>
   );
 };
