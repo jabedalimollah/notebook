@@ -59,6 +59,9 @@ const signUpSchema = z.object({
     })
     .trim()
     .min(8, { message: "password must be at least 8 characters" }),
+
+  // ------------------ Grid View -------------
+  gridView: z.string().optional(),
 });
 
 export { signUpSchema };

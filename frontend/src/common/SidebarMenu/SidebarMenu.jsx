@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { MdEditDocument } from "react-icons/md";
 import { FaList } from "react-icons/fa";
@@ -9,7 +9,17 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
 import { FaGlobe } from "react-icons/fa";
+import { GetUserData } from "@/utils/userApiCall";
 const SidebarMenu = () => {
+  const [userData, setUserData] = useState([]);
+
+  const userDataCalling = async () => {
+    let data = await GetUserData();
+    setUserData(data);
+  };
+  useEffect(() => {
+    userDataCalling();
+  }, []);
   return (
     <>
       <div className={`w-2/12 h-full shadow-2xl background_gradient_color `}>
@@ -18,8 +28,9 @@ const SidebarMenu = () => {
             <div className="w-6/12 flex mt-8">
               <Link to="/user/profile" className="w-full rounded-full">
                 <img
-                  src="/Images/Profile_Pictures/profile2.jpg"
-                  alt=""
+                  src={userData.profilePic}
+                  // src="/Images/Profile_Pictures/profile2.jpg"
+                  alt={userData.profilePic}
                   className="w-full rounded-full "
                 />
               </Link>
@@ -29,7 +40,8 @@ const SidebarMenu = () => {
                 to="/user/profile"
                 className="text-green-700 font-bold text-xl"
               >
-                Jabed Ali Mollah
+                {/* Jabed Ali Mollah */}
+                {userData.name}
               </Link>
 
               <Link

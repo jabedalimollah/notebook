@@ -74,7 +74,7 @@ const DeleteBtnComponent = ({ handleBackBtn }) => {
     try {
       // console.log("pass", password);
       const token = localStorage.getItem("notebookToken");
-      const user = jwtDecode(token);
+      const user = token ? jwtDecode(token) : null;
       const response = await axios.delete(
         `${apiRoutes.deleteUserProfileURI}/${user._id}`,
 

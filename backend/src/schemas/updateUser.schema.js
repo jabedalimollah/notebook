@@ -86,6 +86,8 @@ const updateUserSchema = z.object({
   fontColor: z
     .string({ invalid_type_error: "font color must be a string" })
     .optional(),
+  // ----------------------- Grid View -----------------
+  gridView: z.string().optional(),
 });
 
 export default updateUserSchema;

@@ -2,7 +2,7 @@ import { apiRoutes } from "./apiRoutes";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 const token = localStorage.getItem("notebookToken");
-const user = jwtDecode(token); // jwtDecode is for extract user id
+const user = token ? jwtDecode(token) : null; // jwtDecode is for extract user id
 
 // ==================== Post Notes [create new notes] ===========================
 const PostNotes = async (data) => {

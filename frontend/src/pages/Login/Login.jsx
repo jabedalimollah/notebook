@@ -61,7 +61,8 @@ const Login = () => {
       // dispatch(getData(response.data.data._id));
       localStorage.setItem("notebookToken", response.data.token);
       setMessage(false);
-      navigate("/");
+      // navigate("/");
+      navigate("/user/notes");
     } catch (error) {
       // console.log("err", error.response.data.message);
       if ("email or password doesn't exists" === error.response.data.message) {

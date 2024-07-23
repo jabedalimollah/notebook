@@ -36,7 +36,7 @@ const UserProfile = () => {
   const handleApiCalling = async () => {
     try {
       const token = localStorage.getItem("notebookToken");
-      const user = jwtDecode(token);
+      const user = token ? jwtDecode(token) : null;
       // console.log(user._id);
 
       // console.log(user._id);

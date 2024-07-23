@@ -144,7 +144,8 @@ const Signup = () => {
       // dispatch(getData(response.data));
       localStorage.setItem("notebookToken", response.data.token);
 
-      navigate("/");
+      // navigate("/");
+      navigate("/user/notes");
     } catch (error) {
       // console.log("err", error.response.data.message);
       if (error.response.data.message === "username already exists") {

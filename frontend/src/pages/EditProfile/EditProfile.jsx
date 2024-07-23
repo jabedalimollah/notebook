@@ -86,7 +86,7 @@ const EditProfile = () => {
 
     // console.log(userData);
     const token = localStorage.getItem("notebookToken");
-    const user = jwtDecode(token);
+    const user = token ? jwtDecode(token) : null;
     if (userData._id === user._id) {
       // console.log("asdf", userData);
       let stateData = countryData.filter(
@@ -119,7 +119,7 @@ const EditProfile = () => {
   const handleApiCalling = async () => {
     try {
       const token = localStorage.getItem("notebookToken");
-      const user = jwtDecode(token);
+      const user = token ? jwtDecode(token) : null;
 
       const response = await axios.get(
         `${apiRoutes.userprofileURI}/${user._id}`,

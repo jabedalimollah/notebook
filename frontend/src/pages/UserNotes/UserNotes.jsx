@@ -10,6 +10,8 @@ import { allNotes } from "@/features/notes/notesSlice";
 import { RiEdit2Fill } from "react-icons/ri";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import DeleteNotes from "@/components/DeleteNotes/DeleteNotes";
+import NotesView from "@/components/NotesView/NotesView";
+import { GetUserData } from "@/utils/userApiCall";
 
 const UserNotes = () => {
   // --------------- State Start ------------------
@@ -17,6 +19,8 @@ const UserNotes = () => {
   const [searchInput, setSearchInput] = useState("");
   const [deleteBtn, setDeleteBtn] = useState(false);
   const [notesId, setNotesId] = useState(null);
+  const [gridBtn, setGridBtn] = useState(false);
+  const [userDetails, setUserDetails] = useState([]);
   const notes = useSelector((state) => state.notes.value);
 
   // ------------------ State End -----------------
@@ -27,6 +31,7 @@ const UserNotes = () => {
     // console.log(await GetNotes());
   };
 
+  // --------------------- Search Input ---------------------
   const handleSearchInput = (e) => {
     setSearchInput(e.target.value);
     // console.log(e.target.value);
@@ -44,15 +49,32 @@ const UserNotes = () => {
     setData(newData);
   };
 
+  // ------------------- Delete Button -------------------------
   const handleDeleteBtn = async (id) => {
     setDeleteBtn(!deleteBtn);
     setNotesId(id);
     setData(await GetNotes());
   };
+
+  // ------------------- Grid Button --------------
+  const handleGridBtn = async () => {
+    setGridBtn(!gridBtn);
+    let userData = await GetUserData();
+    setUserDetails(userData);
+  };
+
+  const handleApiCalling = async () => {
+    let userData = await GetUserData();
+    setUserDetails(userData);
+    // console.log(userData);
+  };
+
+  // ---------------------- useEffect -----------------------------
   useEffect(() => {
     // setData(GetNotes());
     // console.log(GetNotes());
     // GetNotes();
+    handleApiCalling();
     NotesData();
   }, []);
 
@@ -95,14 +117,26 @@ const UserNotes = () => {
               </div>
               {/* ================= View Option =================== */}
               <div>
-                <button className="py-2 px-3 border border-green-700 flex items-center gap-x-2 text-green-700 rounded hover:bg-green-700 hover:text-white">
+                <button
+                  onClick={handleGridBtn}
+                  className="py-2 px-3 border border-green-700 flex items-center gap-x-2 text-green-700 rounded hover:bg-green-700 hover:text-white"
+                >
                   View <BsFillGrid3X3GapFill />
                 </button>
               </div>
             </div>
             {/* ======================= All Notes From User ================ */}
             <div className="w-full ">
-              <div className="w-full grid grid-cols-3 gap-2 p-4">
+              <div
+                className={`w-full grid ${
+                  userDetails.gridView === "list"
+                    ? "grid-cols-1 "
+                    : userDetails.gridView === "grid"
+                    ? "grid-cols-3"
+                    : "grid-cols-2"
+                } gap-2 p-4`}
+              >
+                {/* <div className="w-full grid grid-cols-3 gap-2 p-4"> */}
                 {data.map((item, index) => (
                   <div
                     className="w-full  p-5 rounded-lg bg-green-100 shadow-xls shadow-lg"
@@ -138,11 +172,15 @@ const UserNotes = () => {
           </div>
         </div>
       </div>
+      {/* ======================== Delete Button ===================== */}
       {deleteBtn ? (
         <DeleteNotes handleDeleteBtn={handleDeleteBtn} notesId={notesId} />
       ) : (
         ""
       )}
+
+      {/* ======================= View Notes ========================= */}
+      {gridBtn ? <NotesView handleGridBtn={handleGridBtn} /> : ""}
     </>
   );
 };

@@ -8,7 +8,7 @@ import { FindNotes, UpdateNotesData } from "@/utils/notesApiCalling";
 
 // ============ JWT Token ===============
 const token = localStorage.getItem("notebookToken");
-const user = jwtDecode(token); // jwtDecode is for extract user id
+const user = token ? jwtDecode(token) : null; // jwtDecode is for extract user id
 
 const UpdateNotes = () => {
   // ================== State Start ====================

@@ -58,6 +58,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "#000000",
   },
+  gridView: {
+    type: String,
+    default: "grid",
+  },
 });
 // ------------------- Hashed Password --------------------
 userSchema.pre("save", async function (next) {

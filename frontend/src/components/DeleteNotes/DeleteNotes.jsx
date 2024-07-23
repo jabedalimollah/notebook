@@ -13,7 +13,7 @@ const DeleteNotes = ({ handleDeleteBtn, notesId }) => {
   };
   return (
     <>
-      <div className="w-full h-dvh bg-green-100 flex justify-center items-center z-20 fixed top-0 left-0">
+      <div className="w-full h-dvh bg-green-100/85 flex justify-center items-center z-20 fixed top-0 left-0">
         <div className="w-4/12 background_gradient_color p-8 flex flex-col justify-center items-center rounded-lg shadow-2xl gap-y-2">
           <h1 className="text-2xl text-red-700">Delete Notes</h1>
           <p>Are you sure you want to delete this notes ?</p>

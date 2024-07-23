@@ -7,7 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import { PostNotes } from "@/utils/notesApiCalling";
 // ============ JWT Token ===============
 const token = localStorage.getItem("notebookToken");
-const user = jwtDecode(token); // jwtDecode is for extract user id
+const user = token ? jwtDecode(token) : null; // jwtDecode is for extract user id
 const CreateNotes = () => {
   // ================== State Start ====================
   const [data, setData] = useState({
