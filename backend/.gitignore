@@ -118,7 +118,7 @@ dist
 .pnp.*
 
 # plan file
-.file_structure.txt
-.project_plan.txt
+file_structure.txt
+project_plan.txt
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node
