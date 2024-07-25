@@ -5,6 +5,16 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoIosSave } from "react-icons/io";
 import { jwtDecode } from "jwt-decode";
 import { PostNotes } from "@/utils/notesApiCalling";
+import { FaFileExport } from "react-icons/fa";
+import { IoMdLock } from "react-icons/io";
+import { IoReorderFourOutline } from "react-icons/io5";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import NotesLockBtn from "@/components/NotesLockBtn/NotesLockBtn";
 // ============ JWT Token ===============
 const token = localStorage.getItem("notebookToken");
 const user = token ? jwtDecode(token) : null; // jwtDecode is for extract user id
@@ -14,12 +24,16 @@ const CreateNotes = () => {
     title: "",
     text: "",
     author: "",
+    isPasswordProtected: false,
+    password: null,
   });
   const [currentDate, setCurrentDate] = useState({
     date: "",
     time: "",
   });
 
+  const [optionBtn, setOptionBtn] = useState(false);
+  const [lockBtn, setLockBtn] = useState(false);
   // ================= State End ========================
   const Navigate = useNavigate();
 
@@ -32,6 +46,7 @@ const CreateNotes = () => {
   const handleSaveBtn = () => {
     if (!(data.title === "")) {
       PostNotes(data);
+      // console.log(data);
       Navigate("/user/notes");
     }
   };
@@ -49,6 +64,25 @@ const CreateNotes = () => {
 
     setCurrentDate({ date, time });
   };
+
+  // ============ Lock Button ===============
+  const handlelockBtn = () => {
+    // console.log("handle lock");
+    setLockBtn(!lockBtn);
+    // setOptionBtn(false);
+    setOptionBtn(!optionBtn);
+  };
+
+  // ============ Lock Password Details ===========
+  const handleNotesPasswordReturn = (notesPassword) => {
+    setData({
+      ...data,
+      isPasswordProtected: notesPassword.isPasswordProtected,
+      password: notesPassword.password,
+    });
+    // console.log(notesPassword);
+  };
+
   // =========== useEffect ===============
   useEffect(() => {
     handleDateAndTime();
@@ -72,10 +106,50 @@ const CreateNotes = () => {
                 <IoIosSave /> Save
               </button>
               {/* ================== Option Button ==================== */}
-              <button className="flex items-center px-2 border font-bold border-gray-800 text-gray-800 hover:bg-gray-600 hover:text-white py-2 rounded-lg">
+              {/* <button className="flex items-center px-2 border font-bold border-gray-800 text-gray-800 hover:bg-gray-600 hover:text-white py-2 rounded-lg">
                 <BsThreeDotsVertical />
                 Option
-              </button>
+              </button> */}
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    onClick={() => setOptionBtn(true)}
+                    // className="flex items-center px-2 border font-bold border-gray-800 text-gray-800 hover:bg-gray-600 hover:text-white py-2 rounded-lg"
+                  >
+                    <BsThreeDotsVertical />
+                    Option
+                  </Button>
+                </PopoverTrigger>
+                {optionBtn ? (
+                  <PopoverContent className={`flex flex-col bg-green-100 `}>
+                    {/* <div className="flex flex-col absolute top-24 right-12 bg-green-300 p-14 "> */}
+
+                    <Button
+                      variant="text"
+                      className={`flex justify-start gap-x-2 hover:bg-green-700 hover:text-white`}
+                    >
+                      <FaFileExport /> Export
+                    </Button>
+                    <Button
+                      onClick={handlelockBtn}
+                      variant="text"
+                      className={`flex justify-start gap-x-2  hover:bg-green-700 hover:text-white`}
+                    >
+                      <IoMdLock /> Lock
+                    </Button>
+                    <Button
+                      variant="text"
+                      className={`flex justify-start gap-x-2  hover:bg-green-700 hover:text-white`}
+                    >
+                      <IoReorderFourOutline /> Hide Line
+                    </Button>
+                    {/* </div> */}
+                  </PopoverContent>
+                ) : (
+                  ""
+                )}
+              </Popover>
             </div>
           </div>
           {/* ===================== Title, Time And Notes Section ==================== */}
@@ -112,6 +186,15 @@ const CreateNotes = () => {
           ></textarea>
         </div>
       </div>
+
+      {lockBtn ? (
+        <NotesLockBtn
+          handlelockBtn={handlelockBtn}
+          handleNotesPasswordReturn={handleNotesPasswordReturn}
+        />
+      ) : (
+        ""
+      )}
     </>
   );
 };

@@ -12,6 +12,8 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import DeleteNotes from "@/components/DeleteNotes/DeleteNotes";
 import NotesView from "@/components/NotesView/NotesView";
 import { GetUserData } from "@/utils/userApiCall";
+import { FaLock } from "react-icons/fa6";
+import { IoMdLock } from "react-icons/io";
 
 const UserNotes = () => {
   // --------------- State Start ------------------
@@ -143,9 +145,28 @@ const UserNotes = () => {
                     key={index}
                   >
                     <h1 className="text-2xl font-bold truncate text-green-700">
-                      {item.title}
+                      {/* {item.title} */}
+                      {item.isPasswordProtected ? (
+                        <span className="flex gap-x-1 text-gray-500 font-bold items-center text-2xl">
+                          {/* <FaLock /> */}
+                          <IoMdLock className="self-center" />
+                          Locked
+                        </span>
+                      ) : (
+                        item.title
+                      )}
                     </h1>
-                    <p className="truncate text-green-700">{item.text}</p>
+                    <p className="truncate text-green-700">
+                      {item.isPasswordProtected ? (
+                        <span className="flex  gap-x-0.5 items-center">
+                          <IoMdLock />
+                          This notes is protected
+                        </span>
+                      ) : (
+                        item.text
+                      )}
+                      {/* {item.text} */}
+                    </p>
 
                     <div className="w-full flex justify-between mt-2">
                       <NavLink
