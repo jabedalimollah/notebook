@@ -117,8 +117,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# plan file
-file_structure.txt
-project_plan.txt
+
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node

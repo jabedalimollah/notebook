@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { Label } from "../ui/";
 import { Switch } from "../ui/switch";
 import { BiSolidLock } from "react-icons/bi";
 import { BiSolidLockOpen } from "react-icons/bi";
-const NotesLockBtn = ({ handlelockBtn, handleNotesPasswordReturn }) => {
+import { useParams } from "react-router-dom";
+const NotesLockBtn = ({ handlelockBtn, handleNotesPasswordReturn, data }) => {
+  // ------------------ State Start ----------------
   const [switchChecked, setSwitchChecked] = useState("");
   const [passwordDetails, setPasswordDetails] = useState({
     isPasswordProtected: false,
     password: "",
     confirmNotesPassword: "",
   });
+
+  // ----------------- State End ---------------
+  //   ----------------- Get params Data ----------
+  const { notes_id } = useParams(); // get params data [ notes id ]
+
   const handleNotesPasswordInput = (e) => {
     // console.log(switchChecked);
     setPasswordDetails({
@@ -23,11 +30,28 @@ const NotesLockBtn = ({ handlelockBtn, handleNotesPasswordReturn }) => {
     //   [e.target.name]: e.target.value,
     // });
   };
+
+  // ================ Handle Password Save Button ============
   const handlePasswordSaveBtn = () => {
     // console.log(passwordDetails);
-    handleNotesPasswordReturn(passwordDetails);
-    handlelockBtn();
+    if (!(passwordDetails.password === "")) {
+      handleNotesPasswordReturn(passwordDetails);
+      handlelockBtn();
+    }
   };
+
+  const passwordExist = () => {
+    setPasswordDetails({
+      isPasswordProtected: data.isPasswordProtected,
+      password: data.password,
+      confirmNotesPassword: data.password,
+    });
+  };
+
+  // =============== useEffect ============
+  useEffect(() => {
+    notes_id ? passwordExist() : null;
+  }, []);
   return (
     <>
       <div className="w-full h-dvh fixed top-0 left-0 flex justify-center items-center z-50  bg-green-100/75">
@@ -66,6 +90,8 @@ const NotesLockBtn = ({ handlelockBtn, handleNotesPasswordReturn }) => {
               type="password"
               placeholder="Enter new password "
               name="password"
+              defaultValue={passwordDetails.password}
+              // value={passwordDetails.password}
               onChange={handleNotesPasswordInput}
               disabled={!passwordDetails.isPasswordProtected}
               className={`mb-3 px-3 py-2 w-full outline-none border-1  shadow-gray-400 shadow-inner border-green-600 rounded flex`}
@@ -76,6 +102,8 @@ const NotesLockBtn = ({ handlelockBtn, handleNotesPasswordReturn }) => {
               type="password"
               placeholder="Enter Confirm password "
               name="confirmNotesPassword"
+              // value={passwordDetails.confirmNotesPassword}
+              defaultValue={passwordDetails.confirmNotesPassword}
               onChange={handleNotesPasswordInput}
               disabled={!passwordDetails.isPasswordProtected}
               className={`px-3 py-2 w-full outline-none border-1  shadow-gray-400 shadow-inner border-green-600 rounded flex`}
