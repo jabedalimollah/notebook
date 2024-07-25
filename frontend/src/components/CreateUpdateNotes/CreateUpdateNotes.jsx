@@ -12,6 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import NotesLockBtn from "../NotesLockBtn/NotesLockBtn";
 import { IoIosLock } from "react-icons/io";
+import { LuEqualNot } from "react-icons/lu";
 
 // ============ JWT Token ===============
 const token = localStorage.getItem("notebookToken");
@@ -33,6 +34,7 @@ const CreateUpdateNotes = () => {
   const [optionBtn, setOptionBtn] = useState(false);
   const [lockBtn, setLockBtn] = useState(false);
   const [passwordProtection, setPasswordProtection] = useState(false);
+  const [lineHide, setLineHide] = useState(true);
   // ================= State End ========================
   const Navigate = useNavigate();
 
@@ -188,9 +190,20 @@ const CreateUpdateNotes = () => {
                         </Button>
                         <Button
                           variant="text"
+                          onClick={() => setLineHide(!lineHide)}
                           className={`flex justify-start gap-x-2  hover:bg-green-700 hover:text-white`}
                         >
-                          <IoReorderFourOutline /> Hide Line
+                          {lineHide ? (
+                            <>
+                              <LuEqualNot />
+                              Hide Line
+                            </>
+                          ) : (
+                            <>
+                              <IoReorderFourOutline />
+                              Show Line
+                            </>
+                          )}
                         </Button>
                         {/* </div> */}
                       </PopoverContent>
@@ -232,7 +245,9 @@ const CreateUpdateNotes = () => {
                 value={data.text}
                 onChange={handleInputChange}
                 placeholder="Write Here ... "
-                className={`w-full h-dvh px-4 py-1 border border-green-700 outline-none textContent`}
+                className={`w-full h-dvh px-4 py-1 border border-green-700 outline-none ${
+                  lineHide ? "textContent" : "textContentHide"
+                } `}
               ></textarea>
             </div>
           </div>

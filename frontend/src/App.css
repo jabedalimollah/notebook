@@ -83,3 +83,15 @@ textarea::-webkit-scrollbar-thumb {
   overflow: hidden;
   white-space: nowrap;
 }
+
+.textContentHide {
+  margin-top: 5px;
+  width: 96%;
+  height: 87%;
+  border: none;
+  outline: none;
+  margin-bottom: 5px;
+  border-radius: 0 0 20px 20px;
+  padding: 8px 10px;
+  line-height: 31px;
+}
