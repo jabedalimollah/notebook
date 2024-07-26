@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
   },
   themeColor: {
     type: String,
-    default: "#FFFFFF",
+    default: "bg-green-100",
   },
   fontFamily: {
     type: String,

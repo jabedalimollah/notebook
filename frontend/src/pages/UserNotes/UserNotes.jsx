@@ -22,6 +22,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import NotesThemeColors from "@/components/NotesThemeColors/NotesThemeColors";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const UserNotes = () => {
   // --------------- State Start ------------------
@@ -31,6 +33,7 @@ const UserNotes = () => {
   const [notesId, setNotesId] = useState(null);
   const [gridBtn, setGridBtn] = useState(false);
   const [userDetails, setUserDetails] = useState([]);
+  const [themeColorBtn, setThemeColorBtn] = useState(false);
   const notes = useSelector((state) => state.notes.value);
 
   // ------------------ State End -----------------
@@ -75,6 +78,17 @@ const UserNotes = () => {
     // setData(rev.reverse());
   };
 
+  // ---------------------- Theme Colors Button ----------------
+  const handleThemeColor = (response) => {
+    setThemeColorBtn(!themeColorBtn);
+    handleApiCalling();
+    setUserDetails(response);
+  };
+
+  // ---------------- Theme Color Back Button ---------------
+  const handleThemeBackBtn = () => {
+    setThemeColorBtn(!themeColorBtn);
+  };
   // -------------------- Sort Button -------------------
   const handleSortingBtn = (sortValue) => {
     if (sortValue === "time_ascending") {
@@ -174,7 +188,7 @@ const UserNotes = () => {
               </div>
             </div>
 
-            {/* ================== Sorting Notes ======================= */}
+            {/* ==================Colors, Sorting Notes and Notes Count ======================= */}
             <div className="w-full flex justify-between p-5 bg-gray-300 py-2 ">
               {/* <select name="notes" id="notes" className="p-3">
                 <option value="time_ascending" className="p-3 bg-green-600 m-5">
@@ -187,12 +201,21 @@ const UserNotes = () => {
                 <option value="a_z">Sort alphabetical (A to Z)</option>
                 <option value="z_a">Sort alphabetical (Z to A)</option>
               </select> */}
-              <button className="">Color</button>
+              {/* ===================== Choose Colors Button ================== */}
+              <button
+                onClick={handleThemeColor}
+                className={`py-2 px-5 borders border-black rounded shadow-sm shadow-gray-500 ${
+                  userDetails.themeColor || "bg-green-100"
+                }`}
+              ></button>
+
+              {/* ================== Sorting Notes Button ========================= */}
               <DropdownMenu className={` `}>
                 <DropdownMenuTrigger
-                  className={`px-2  py-1 rounded text-white bg-sky-500 outline-none `}
+                  className={`px-2  py-1 rounded text-green-900  outline-none flex gap-x-1 items-center `}
+                  // className={`px-2  py-1 rounded text-white font-bold bg-gray-600 outline-none `}
                 >
-                  Sorting notes
+                  Sorting notes <IoMdArrowDropdown />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuSeparator />
@@ -214,7 +237,8 @@ const UserNotes = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <div>{data.length} Notes</div>
+              {/* ======================= Total Notes Count ================== */}
+              <div className="text-green-800">{data.length} Notes</div>
             </div>
             {/* ======================= All Notes From User ================ */}
             <div className="w-full ">
@@ -230,7 +254,10 @@ const UserNotes = () => {
                 {/* <div className="w-full grid grid-cols-3 gap-2 p-4"> */}
                 {data.map((item, index) => (
                   <div
-                    className="w-full  p-5 rounded-lg bg-green-100 shadow-xls shadow-lg"
+                    className={`w-full  p-5 rounded-lg ${
+                      userDetails.themeColor || "bg-green-100"
+                    } shadow-xls shadow-lg`}
+                    // className="w-full  p-5 rounded-lg bg-green-100 shadow-xls shadow-lg"
                     key={index}
                   >
                     <h1 className="text-2xl font-bold truncate text-green-700">
@@ -291,6 +318,16 @@ const UserNotes = () => {
 
       {/* ======================= View Notes ========================= */}
       {gridBtn ? <NotesView handleGridBtn={handleGridBtn} /> : ""}
+
+      {/* ===================== Notes Theme Color ================= */}
+      {themeColorBtn ? (
+        <NotesThemeColors
+          handleThemeColor={handleThemeColor}
+          handleThemeBackBtn={handleThemeBackBtn}
+        />
+      ) : (
+        ""
+      )}
     </>
   );
 };
