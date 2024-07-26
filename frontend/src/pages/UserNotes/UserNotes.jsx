@@ -14,6 +14,14 @@ import NotesView from "@/components/NotesView/NotesView";
 import { GetUserData } from "@/utils/userApiCall";
 import { FaLock } from "react-icons/fa6";
 import { IoMdLock } from "react-icons/io";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const UserNotes = () => {
   // --------------- State Start ------------------
@@ -65,6 +73,35 @@ const UserNotes = () => {
     // let rev = await GetNotes();
 
     // setData(rev.reverse());
+  };
+
+  // -------------------- Sort Button -------------------
+  const handleSortingBtn = (sortValue) => {
+    if (sortValue === "time_ascending") {
+      setData([...notes]);
+    } else if (sortValue === "time_descending") {
+      let rev = [...notes];
+      let rev_temp = rev.reverse();
+      setData(rev_temp);
+    } else if (sortValue === "a-z") {
+      let sortNotes = [...notes];
+      let a_zSort = sortNotes.sort((item1, item2) => {
+        let first = item1.title.toLowerCase();
+        let second = item2.title.toLowerCase();
+        return first > second ? 1 : -1;
+      });
+
+      setData(a_zSort);
+    } else if (sortValue === "z-a") {
+      let sortNotes = [...notes];
+      let z_aSort = sortNotes.sort((item1, item2) => {
+        let first = item1.title.toLowerCase();
+        let second = item2.title.toLowerCase();
+        return first > second ? -1 : 1;
+      });
+
+      setData(z_aSort);
+    }
   };
 
   // ------------------- Grid Button --------------
@@ -135,6 +172,49 @@ const UserNotes = () => {
                   View <BsFillGrid3X3GapFill />
                 </button>
               </div>
+            </div>
+
+            {/* ================== Sorting Notes ======================= */}
+            <div className="w-full flex justify-between p-5 bg-gray-300 py-2 ">
+              {/* <select name="notes" id="notes" className="p-3">
+                <option value="time_ascending" className="p-3 bg-green-600 m-5">
+                  Sort time by ascending order
+                </option>
+
+                <option value="time_descending">
+                  Sort time by descending order
+                </option>
+                <option value="a_z">Sort alphabetical (A to Z)</option>
+                <option value="z_a">Sort alphabetical (Z to A)</option>
+              </select> */}
+              <button className="">Color</button>
+              <DropdownMenu className={` `}>
+                <DropdownMenuTrigger
+                  className={`px-2  py-1 rounded text-white bg-sky-500 outline-none `}
+                >
+                  Sorting notes
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => handleSortingBtn("time_ascending")}
+                  >
+                    Sort time by ascending order
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleSortingBtn("time_descending")}
+                  >
+                    Sort time by descending order
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleSortingBtn("a-z")}>
+                    Sort alphabetical (A to Z)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleSortingBtn("z-a")}>
+                    Sort alphabetical (Z to A)
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <div>{data.length} Notes</div>
             </div>
             {/* ======================= All Notes From User ================ */}
             <div className="w-full ">
