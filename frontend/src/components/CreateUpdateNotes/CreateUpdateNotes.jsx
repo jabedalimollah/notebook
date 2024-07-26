@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import NotesLockBtn from "../NotesLockBtn/NotesLockBtn";
 import { IoIosLock } from "react-icons/io";
 import { LuEqualNot } from "react-icons/lu";
+import { jsPDF } from "jspdf";
 
 // ============ JWT Token ===============
 const token = localStorage.getItem("notebookToken");
@@ -104,6 +105,41 @@ const CreateUpdateNotes = () => {
     setCurrentDate({ date, time });
   };
 
+  // =================== Export Txt file Button ==================
+  const handleExportTxtFile = () => {
+    const value = { title: data.title, text: data.text };
+    const element = document.createElement("a");
+
+    const file = new Blob(
+      [
+        document.getElementById("title").value,
+        "\n",
+        document.getElementById("text").value,
+      ],
+      { type: "text/plain;charset=utf-8" }
+    );
+    element.href = URL.createObjectURL(file);
+    element.download = "My_Notebook_File.txt";
+    // element.download = `${data.title}.txt`;
+    // element.download = "myFile.txt";
+    document.body.appendChild(element);
+    element.click();
+  };
+
+  // ====================== Export PDF file Button ===========
+
+  const handleExportPdfFile = () => {
+    // const doc = new jsPDF();
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: [297, 210], // A4 page size in mm
+    });
+    doc.setFontSize(12);
+    doc.text(`${data.title}\n${data.text}`, 10, 10);
+    doc.save("My_Notebook_File.pdf");
+  };
+
   // ============ Lock Button ===============
   const handlelockBtn = () => {
     // console.log("handle lock");
@@ -177,9 +213,17 @@ const CreateUpdateNotes = () => {
 
                         <Button
                           variant="text"
+                          onClick={handleExportPdfFile}
                           className={`flex justify-start gap-x-2 hover:bg-green-700 hover:text-white`}
                         >
-                          <FaFileExport /> Export
+                          <FaFileExport /> Export PDF
+                        </Button>
+                        <Button
+                          variant="text"
+                          onClick={handleExportTxtFile}
+                          className={`flex justify-start gap-x-2 hover:bg-green-700 hover:text-white`}
+                        >
+                          <FaFileExport /> Export txt
                         </Button>
                         <Button
                           onClick={handlelockBtn}
@@ -220,6 +264,7 @@ const CreateUpdateNotes = () => {
                   <input
                     type="text"
                     name="title"
+                    id="title"
                     value={data.title}
                     onChange={handleInputChange}
                     placeholder="Title : <Your Notes Title>"

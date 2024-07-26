@@ -29,6 +29,9 @@ const UserNotes = () => {
   const dispatch = useDispatch();
   const NotesData = async () => {
     setData(await GetNotes());
+    // let rev = await GetNotes();
+
+    // setData(rev.reverse());
     dispatch(allNotes(await GetNotes()));
     // console.log(await GetNotes());
   };
@@ -49,6 +52,9 @@ const UserNotes = () => {
     });
     // console.log(newData);
     setData(newData);
+    // if (e.target.value === "") {
+    //   setData(newData.reverse());
+    // }
   };
 
   // ------------------- Delete Button -------------------------
@@ -56,6 +62,9 @@ const UserNotes = () => {
     setDeleteBtn(!deleteBtn);
     setNotesId(id);
     setData(await GetNotes());
+    // let rev = await GetNotes();
+
+    // setData(rev.reverse());
   };
 
   // ------------------- Grid Button --------------
