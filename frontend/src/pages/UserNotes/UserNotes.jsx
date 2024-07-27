@@ -212,7 +212,7 @@ const UserNotes = () => {
               {/* ================== Sorting Notes Button ========================= */}
               <DropdownMenu className={` `}>
                 <DropdownMenuTrigger
-                  className={`px-2  py-1 rounded text-green-900  outline-none flex gap-x-1 items-center `}
+                  className={`px-2  py-1 text-green-900  outline-none flex gap-x-1 items-center rounded hover:bg-green-700 hover:text-white `}
                   // className={`px-2  py-1 rounded text-white font-bold bg-gray-600 outline-none `}
                 >
                   Sorting notes <IoMdArrowDropdown />

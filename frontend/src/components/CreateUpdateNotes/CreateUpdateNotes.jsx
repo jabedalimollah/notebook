@@ -14,6 +14,10 @@ import NotesLockBtn from "../NotesLockBtn/NotesLockBtn";
 import { IoIosLock } from "react-icons/io";
 import { LuEqualNot } from "react-icons/lu";
 import { jsPDF } from "jspdf";
+import { HiMiniSpeakerWave } from "react-icons/hi2";
+import { FaMicrophone } from "react-icons/fa6";
+import { useSpeechSynthesis } from "react-speech-kit";
+import { FaRegStopCircle } from "react-icons/fa";
 
 // ============ JWT Token ===============
 const token = localStorage.getItem("notebookToken");
@@ -36,8 +40,10 @@ const CreateUpdateNotes = () => {
   const [lockBtn, setLockBtn] = useState(false);
   const [passwordProtection, setPasswordProtection] = useState(false);
   const [lineHide, setLineHide] = useState(true);
+  const [speakerBtn, setSpeakerBtn] = useState(false);
   // ================= State End ========================
   const Navigate = useNavigate();
+  const { speak } = useSpeechSynthesis();
 
   //   ----------------- Get params Data ----------
   const { notes_id } = useParams(); // get params data [ notes id ]
@@ -89,6 +95,32 @@ const CreateUpdateNotes = () => {
         Navigate("/user/notes");
       }
     }
+  };
+
+  // ====================== Speaker Button ==================
+
+  const handleSpeakerBtn = (toggle) => {
+    // speak({ text: "hi hello" });
+    setSpeakerBtn(toggle);
+
+    const utterance = new SpeechSynthesisUtterance(data.text);
+
+    // Select a voice
+    const voices = speechSynthesis.getVoices();
+
+    utterance.voice = voices[0]; // Choose a specific voice
+
+    // Speak the text
+
+    window.speechSynthesis.cancel();
+    if (toggle) {
+      window.speechSynthesis.speak(utterance);
+    } else {
+      window.speechSynthesis.cancel();
+    }
+
+    // console.log(utterance)
+    // window.speechSynthesis.pause();
   };
 
   // ============== Date and Time =============
@@ -183,6 +215,32 @@ const CreateUpdateNotes = () => {
                 >
                   <IoMdArrowBack /> Back
                 </NavLink>
+
+                {/* ================= Speaker and Mic Button ================== */}
+                <div className="flex gap-x-1 text-green-800">
+                  {/* ================= Speaker Button ============= */}
+                  <div className="flex">
+                    {speakerBtn ? (
+                      <button
+                        onClick={() => handleSpeakerBtn(false)}
+                        className=" px-6 py-2  bg-green-200 active:bg-green-700 active:text-white rounded text-red-600"
+                      >
+                        <FaRegStopCircle />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleSpeakerBtn(true)}
+                        className=" px-6 py-2  bg-green-200 active:bg-green-700 active:text-white rounded"
+                      >
+                        <HiMiniSpeakerWave />
+                      </button>
+                    )}
+                  </div>
+
+                  <button className=" px-6 py-2  bg-green-200  active:bg-green-700 active:text-white rounded">
+                    <FaMicrophone />
+                  </button>
+                </div>
                 <div className="flex  gap-x-2 ">
                   {/* ================ Save Button ========== */}
                   <button
