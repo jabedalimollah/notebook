@@ -16,12 +16,19 @@ import { LuEqualNot } from "react-icons/lu";
 import { jsPDF } from "jspdf";
 import { HiMiniSpeakerWave } from "react-icons/hi2";
 import { FaMicrophone } from "react-icons/fa6";
-import { useSpeechSynthesis } from "react-speech-kit";
 import { FaRegStopCircle } from "react-icons/fa";
+import { FaDotCircle } from "react-icons/fa";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { IoIosCopy } from "react-icons/io";
+import useClipboard from "react-use-clipboard";
 
 // ============ JWT Token ===============
 const token = localStorage.getItem("notebookToken");
 const user = token ? jwtDecode(token) : null; // jwtDecode is for extract user id
+
+// ------------------- Component Start -------------------
 const CreateUpdateNotes = () => {
   // ================== State Start ====================
   const [data, setData] = useState({
@@ -41,9 +48,16 @@ const CreateUpdateNotes = () => {
   const [passwordProtection, setPasswordProtection] = useState(false);
   const [lineHide, setLineHide] = useState(true);
   const [speakerBtn, setSpeakerBtn] = useState(false);
+  const [micBtn, setMicBtn] = useState(false);
+
   // ================= State End ========================
+  const [isCopied, setCopied] = useClipboard(`${data.title}\n${data.text}`, {
+    // const [isCopied, setCopied] = useClipboard(data.text, {
+    successDuration: 1000,
+  });
   const Navigate = useNavigate();
-  const { speak } = useSpeechSynthesis();
+  const { transcript, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
 
   //   ----------------- Get params Data ----------
   const { notes_id } = useParams(); // get params data [ notes id ]
@@ -51,6 +65,7 @@ const CreateUpdateNotes = () => {
   // ================ handle Input Change ===================
   const handleInputChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
+    // setCopied(data.text);
   };
 
   //   =============== Find Notes Data ==================
@@ -100,7 +115,6 @@ const CreateUpdateNotes = () => {
   // ====================== Speaker Button ==================
 
   const handleSpeakerBtn = (toggle) => {
-    // speak({ text: "hi hello" });
     setSpeakerBtn(toggle);
 
     const utterance = new SpeechSynthesisUtterance(data.text);
@@ -121,6 +135,47 @@ const CreateUpdateNotes = () => {
 
     // console.log(utterance)
     // window.speechSynthesis.pause();
+  };
+
+  // ==================== Microphone Button ===================
+  const startListening = () => {
+    return SpeechRecognition.startListening({
+      continuous: true,
+      language: "en-IN",
+    });
+  };
+  if (!browserSupportsSpeechRecognition) {
+    return null;
+  }
+  const handleMicrophoneBtn = () => {
+    if (micBtn) {
+      SpeechRecognition.stopListening();
+      // setData({ ...data, text: transcript });
+      setData({
+        ...data,
+        text: transcript,
+      });
+      setMicBtn(false);
+    } else {
+      startListening();
+      setData({
+        ...data,
+        text: transcript,
+      });
+      // console.log(transcript);
+      setMicBtn(true);
+    }
+    setData({
+      ...data,
+      text: transcript,
+    });
+  };
+
+  // ===================== Copy to clipboard Button =========================
+  const handleCopyToClipboard = () => {
+    // setCopied(data.text);
+    setCopied(`${data.title}\n${data.text}`);
+    // console.log(isCopied);
   };
 
   // ============== Date and Time =============
@@ -236,11 +291,40 @@ const CreateUpdateNotes = () => {
                       </button>
                     )}
                   </div>
+                  {/* ======================= Microphone Button ============================ */}
+                  <div className="hidden">
+                    {micBtn ? (
+                      <button
+                        // onClick={() => handleMicrophoneBtn(false)}
+                        onClick={handleMicrophoneBtn}
+                        className=" px-6 py-2 text-red-600  bg-green-200  active:bg-green-700 active:text-white rounded"
+                      >
+                        <FaDotCircle className={`animate-ping`} />
+                      </button>
+                    ) : (
+                      <button
+                        // onClick={startListening}
+                        onClick={handleMicrophoneBtn}
+                        // onClick={() => handleMicrophoneBtn(true)}
+                        className=" px-6 py-2  bg-green-200  active:bg-green-700 active:text-white rounded"
+                      >
+                        <FaMicrophone />
+                      </button>
+                    )}
+                  </div>
+                  {/* ================================ Copy to Clipboard ========================= */}
+                  <div className="flex ">
+                    <button
+                      onClick={handleCopyToClipboard}
+                      className="flex items-center gap-x-1 px-6 py-2  bg-green-200  active:bg-green-700 active:text-white rounded"
+                    >
+                      {isCopied ? "copied" : "Copy"}
 
-                  <button className=" px-6 py-2  bg-green-200  active:bg-green-700 active:text-white rounded">
-                    <FaMicrophone />
-                  </button>
+                      <IoIosCopy />
+                    </button>
+                  </div>
                 </div>
+
                 <div className="flex  gap-x-2 ">
                   {/* ================ Save Button ========== */}
                   <button
@@ -346,6 +430,7 @@ const CreateUpdateNotes = () => {
                 name="text"
                 id="text"
                 value={data.text}
+                // value={data.text ? data.text : transcript}
                 onChange={handleInputChange}
                 placeholder="Write Here ... "
                 className={`w-full h-dvh px-4 py-1 border border-green-700 outline-none ${
