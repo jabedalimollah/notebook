@@ -146,16 +146,16 @@ const UserNotes = () => {
         <div className="w-full h-screen pt-10 flex ">
           {/* <div className="flex  h-dvh "> */}
           <SidebarMenu />
-          <div className="w-full  flex flex-col background_color overflow-auto ">
-            <div className="w-full flex justify-between p-5 ">
+          <div className="w-full  flex flex-col background_color overflow-auto text-sm md:text-base">
+            <div className="w-full flex justify-between p-4 md:p-5 ">
               {/* ================= Create Notes ============= */}
               <div>
                 <NavLink
                   to="/user/create_notest"
-                  className={`bg-green-700 hover:bg-green-900 text-white py-2 px-3 rounded flex items-center gap-x-1`}
+                  className={`bg-green-700 hover:bg-green-900 text-white py-3 md:py-2 px-3 rounded flex items-center gap-x-1`}
                 >
                   <MdEditSquare />
-                  Create
+                  <span className="hidden md:inline-block">Create</span>
                 </NavLink>
               </div>
               {/* ============ Search Notes ================ */}
@@ -181,15 +181,16 @@ const UserNotes = () => {
               <div>
                 <button
                   onClick={handleGridBtn}
-                  className="py-2 px-3 border border-green-700 flex items-center gap-x-2 text-green-700 rounded hover:bg-green-700 hover:text-white"
+                  className="py-2.5 md:py-2 px-3 border border-green-700 flex items-center gap-x-2 text-green-700 rounded hover:bg-green-700 hover:text-white"
                 >
-                  View <BsFillGrid3X3GapFill />
+                  <span className="hidden md:inline-block">View</span>
+                  <BsFillGrid3X3GapFill />
                 </button>
               </div>
             </div>
 
             {/* ==================Colors, Sorting Notes and Notes Count ======================= */}
-            <div className="w-full flex justify-between p-5 bg-gray-300 py-2 ">
+            <div className="w-full flex justify-between  px-4 md:px-5 bg-gray-300 py-1 md:py-2 ">
               {/* <select name="notes" id="notes" className="p-3">
                 <option value="time_ascending" className="p-3 bg-green-600 m-5">
                   Sort time by ascending order
@@ -204,7 +205,7 @@ const UserNotes = () => {
               {/* ===================== Choose Colors Button ================== */}
               <button
                 onClick={handleThemeColor}
-                className={`py-2 px-5 borders border-black rounded shadow-sm shadow-gray-500 ${
+                className={`py-1 md:py-2 px-4 md:px-5 borders border-black rounded shadow-sm shadow-gray-500 ${
                   userDetails.themeColor || "bg-green-100"
                 }`}
               ></button>
@@ -238,7 +239,9 @@ const UserNotes = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
               {/* ======================= Total Notes Count ================== */}
-              <div className="text-green-800">{data.length} Notes</div>
+              <div className="text-green-800 flex items-center">
+                {data.length} Notes
+              </div>
             </div>
             {/* ======================= All Notes From User ================ */}
             <div className="w-full ">
@@ -260,19 +263,19 @@ const UserNotes = () => {
                     // className="w-full  p-5 rounded-lg bg-green-100 shadow-xls shadow-lg"
                     key={index}
                   >
-                    <h1 className="text-2xl font-bold truncate text-green-700">
+                    <h1 className="text-base md:text-2xl font-bold truncate text-green-700">
                       {/* {item.title} */}
                       {item.isPasswordProtected ? (
-                        <span className="flex gap-x-1 text-gray-500 font-bold items-center text-2xl">
+                        <span className="flex gap-x-1 text-gray-500 font-bold items-center text-sm md:text-2xl">
                           {/* <FaLock /> */}
-                          <IoMdLock className="self-center" />
+                          <IoMdLock className="self-center " />
                           Locked
                         </span>
                       ) : (
                         item.title
                       )}
                     </h1>
-                    <p className="truncate text-green-700">
+                    <p className="truncate text-green-700 text-sm md:text-base">
                       {item.isPasswordProtected ? (
                         <span className="flex  gap-x-0.5 items-center">
                           <IoMdLock />
@@ -287,15 +290,17 @@ const UserNotes = () => {
                     <div className="w-full flex justify-between mt-2">
                       <NavLink
                         to={`/user/update_notes/${item._id}`}
-                        className="flex items-center gap-x-1 text-gray-600 border border-gray-500  shadow-gray-300 shadow-md  px-1.5 py-0.5 rounded hover:bg-gray-500 hover:text-white"
+                        className="flex items-center gap-x-1 text-gray-600 border border-gray-500  shadow-gray-300 shadow-md  px-1.5 py-1 md:py-0.5 rounded hover:bg-gray-500 hover:text-white"
                       >
-                        <RiEdit2Fill /> Edit
+                        <RiEdit2Fill />
+                        <span className="hidden md:inline-block">Edit</span>
                       </NavLink>
                       <button
                         onClick={() => handleDeleteBtn(item._id)}
-                        className="flex items-center gap-x-1 text-red-400 border shadow-gray-300 shadow-md border-red-400 px-1.5 py-0.5 rounded hover:bg-red-400 hover:text-white"
+                        className="flex items-center gap-x-1 text-red-400 border shadow-gray-300 shadow-md border-red-400 px-1.5 py-1 md:py-0.5 rounded hover:bg-red-400 hover:text-white"
                       >
-                        <RiDeleteBin5Fill /> Delete
+                        <RiDeleteBin5Fill />
+                        <span className="hidden md:inline-block">Delete</span>
                       </button>
                     </div>
                   </div>

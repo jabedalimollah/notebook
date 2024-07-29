@@ -19,8 +19,8 @@ import CreateUpdateNotes from "./components/CreateUpdateNotes/CreateUpdateNotes"
 function App() {
   return (
     <>
-      <Navbar />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/" element={<h1>Home</h1>} />
 

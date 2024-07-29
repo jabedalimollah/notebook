@@ -55,7 +55,7 @@ const NotesLockBtn = ({ handlelockBtn, handleNotesPasswordReturn, data }) => {
   return (
     <>
       <div className="w-full h-dvh fixed top-0 left-0 flex justify-center items-center z-50  bg-green-100/75">
-        <div className="w-3/12 flex flex-col p-6  gap-y-3 background_gradient_color shadow-xl shadow-gray-400 rounded-lg">
+        <div className="w-9/12 md:w-6/12 lg:w-3/12 flex flex-col p-6  gap-y-3 background_gradient_color shadow-xl shadow-gray-400 rounded-lg">
           <h1 className="text-2xl text-green-700 font-bold"> Lock Notes</h1>
           <h2 className="text-green-700">Protect your notes</h2>
           <div className="flex gap-x-3 items-center">

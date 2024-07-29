@@ -262,7 +262,7 @@ const CreateUpdateNotes = () => {
         <>
           <div className="w-full  flex flex-col box-border">
             <div className="w-full h-screen pt-10 flex flex-col">
-              <div className="w-full flex justify-between px-6 py-2  bg-green-50">
+              <div className="w-full flex justify-between px-3 text-sm md:text-base md:px-6 py-1 md:py-2  bg-green-50">
                 {/* ================= Back Button ============ */}
                 <NavLink
                   to={"/user/notes"}
@@ -278,14 +278,14 @@ const CreateUpdateNotes = () => {
                     {speakerBtn ? (
                       <button
                         onClick={() => handleSpeakerBtn(false)}
-                        className=" px-6 py-2  bg-green-200 active:bg-green-700 active:text-white rounded text-red-600"
+                        className="px-3 md:px-6 py-1 md:py-2  bg-green-200 active:bg-green-700 active:text-white rounded text-red-600"
                       >
                         <FaRegStopCircle />
                       </button>
                     ) : (
                       <button
                         onClick={() => handleSpeakerBtn(true)}
-                        className=" px-6 py-2  bg-green-200 active:bg-green-700 active:text-white rounded"
+                        className="px-3 md:px-6 py-1 md:py-2  bg-green-200 active:bg-green-700 active:text-white rounded"
                       >
                         <HiMiniSpeakerWave />
                       </button>
@@ -316,7 +316,7 @@ const CreateUpdateNotes = () => {
                   <div className="flex ">
                     <button
                       onClick={handleCopyToClipboard}
-                      className="flex items-center gap-x-1 px-6 py-2  bg-green-200  active:bg-green-700 active:text-white rounded"
+                      className="flex items-center gap-x-1 px-6 py-1 md:py-2  bg-green-200  active:bg-green-700 active:text-white rounded"
                     >
                       {isCopied ? "copied" : "Copy"}
 
@@ -329,9 +329,10 @@ const CreateUpdateNotes = () => {
                   {/* ================ Save Button ========== */}
                   <button
                     onClick={handleSaveBtn}
-                    className={`bg-green-700 hover:bg-green-800 text-white  flex items-center gap-x-1 py-2 px-3 rounded-lg`}
+                    className={`bg-green-700 hover:bg-green-800 text-white  flex items-center gap-x-1 py-1 md:py-2 px-3 rounded-lg`}
                   >
-                    <IoIosSave /> Save
+                    <IoIosSave />
+                    <span className="hidden md:inline-block">Save</span>
                   </button>
                   {/* ================== Option Button ==================== */}
                   {/* <button className="flex items-center px-2 border font-bold border-gray-800 text-gray-800 hover:bg-gray-600 hover:text-white py-2 rounded-lg">
@@ -343,10 +344,11 @@ const CreateUpdateNotes = () => {
                     <PopoverTrigger asChild>
                       <Button
                         onClick={() => setOptionBtn(true)}
+                        className={`h-min md:h-auto`}
                         // className="flex items-center px-2 border font-bold border-gray-800 text-gray-800 hover:bg-gray-600 hover:text-white py-2 rounded-lg"
                       >
                         <BsThreeDotsVertical />
-                        Option
+                        <span className="hidden md:inline-block">Option</span>
                       </Button>
                     </PopoverTrigger>
                     {optionBtn ? (
@@ -410,7 +412,7 @@ const CreateUpdateNotes = () => {
                     value={data.title}
                     onChange={handleInputChange}
                     placeholder="Title : <Your Notes Title>"
-                    className={`border-b-2 border-green-500 srounded py-2 w-6/12 px-4 outline-none `}
+                    className={`border-b-2 border-green-500 srounded py-2 w-7/12 md:w-6/12 px-4 outline-none `}
                   />
                   {/* ================ Date and Time Section ================= */}
                   <div className=" pr-6 text-gray-500 flex py-2 gap-x-2">
@@ -486,7 +488,7 @@ const NotesPasswordVerification = ({
   return (
     <>
       <div className="w-full h-screen flex justify-center items-center background_color">
-        <div className="w-3/12 rounded shadow-2xl background_gradient_color p-6 flex flex-col gap-y-3">
+        <div className="w-9/12 md:w-6/12 lg:w-3/12 rounded shadow-2xl background_gradient_color p-6 flex flex-col gap-y-3">
           <h1 className="text-2xl text-green-800 font-bold">Protected Notes</h1>
           <div className="w-full flex flex-col">
             <span className="text-green-900 flex gap-x-0.5 items-center">

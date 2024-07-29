@@ -15,7 +15,7 @@ const NotesView = ({ handleGridBtn }) => {
   return (
     <>
       <div className="w-full h-dvh fixed top-0 left-0 flex justify-center items-center  bg-green-100/75">
-        <div className="w-3/12 flex flex-col p-6  gap-y-3 background_gradient_color shadow-xl shadow-gray-400 rounded-lg">
+        <div className="w-9/12 md:w-6/12 lg:w-3/12 flex flex-col p-6  gap-y-3 background_gradient_color shadow-xl shadow-gray-400 rounded-lg">
           {/* ================== Close Button =============== */}
           <button
             onClick={() => handleGridBtn()}
