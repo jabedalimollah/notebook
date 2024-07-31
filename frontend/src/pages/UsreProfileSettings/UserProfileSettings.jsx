@@ -89,6 +89,7 @@ const DeleteBtnComponent = ({ handleBackBtn }) => {
       if (response.data.statusInfo === "success") {
         setPasswordValidationMessage("");
         localStorage.removeItem("notebookToken");
+        window.location.reload();
         navigate("/user/login");
       }
     } catch (error) {

@@ -63,6 +63,7 @@ const Login = () => {
       setMessage(false);
       // navigate("/");
       navigate("/user/notes");
+      window.location.reload();
     } catch (error) {
       // console.log("err", error.response.data.message);
       if ("email or password doesn't exists" === error.response.data.message) {

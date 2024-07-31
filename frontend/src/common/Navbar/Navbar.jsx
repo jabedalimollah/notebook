@@ -16,19 +16,24 @@ import { FaGithub } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
 import { FaGlobe } from "react-icons/fa";
 import { GetUserData } from "@/utils/userApiCall";
-
+let token = localStorage.getItem("notebookToken");
 const Navbar = () => {
-  const menuBtn = useSelector((state) => state.menu.value);
+  const [auth, setAuth] = useState(null);
+
   const [userData, setUserData] = useState([]);
+  const menuBtn = useSelector((state) => state.menu.value);
   const dispatch = useDispatch();
 
   const userDataCalling = async () => {
-    let data = await GetUserData();
+    let data = token ? await GetUserData() : [];
     setUserData(data);
   };
 
   useEffect(() => {
     userDataCalling();
+    if (token) {
+      setAuth(token);
+    }
   }, []);
 
   return (
@@ -53,86 +58,114 @@ const Navbar = () => {
           }  lg:hidden w-full md:w-4/12 h-full shadow-2xl background_gradient_color z-20  fixed left-0`}
         >
           <div className="w-full h-full flex flex-col justify-start gap-y-3 md:gap-y-5 items-center ">
-            <div className="w-full flex flex-col  items-center ">
-              <div className="w-4/12 md:w-6/12 flex mt-8">
-                <Link to="/user/profile" className="w-full rounded-full">
-                  <img
-                    src={userData.profilePic}
-                    alt={userData.profilePic}
-                    className="w-full rounded-full "
-                  />
-                </Link>
-              </div>
-              <div className="mt-3 md:mt-4 mb-1 md:mb-4 flex flex-col items-center">
-                <Link
-                  to="/user/profile"
-                  className="text-green-700 font-bold text-xl"
-                  onClick={() => dispatch(menuToggle())}
-                >
-                  {userData.name}
-                </Link>
+            {auth ? (
+              <>
+                <div className="w-full flex flex-col  items-center ">
+                  <div className="w-4/12 md:w-6/12 flex mt-8">
+                    <Link to="/user/profile" className="w-full rounded-full">
+                      <img
+                        src={userData.profilePic || "#"}
+                        alt={userData.profilePic || "#"}
+                        className="w-full rounded-full "
+                      />
+                    </Link>
+                  </div>
+                  <div className="mt-3 md:mt-4 mb-1 md:mb-4 flex flex-col items-center">
+                    <Link
+                      to="/user/profile"
+                      className="text-green-700 font-bold text-xl"
+                      onClick={() => dispatch(menuToggle())}
+                    >
+                      {userData.name}
+                    </Link>
 
-                <Link
-                  to="/user/profile"
-                  className="text-gray-600 font-bold text-base"
-                  onClick={() => dispatch(menuToggle())}
-                >
-                  Profile
-                </Link>
-              </div>
-            </div>
+                    <Link
+                      to="/user/profile"
+                      className="text-gray-600 font-bold text-base"
+                      onClick={() => dispatch(menuToggle())}
+                    >
+                      Profile
+                    </Link>
+                  </div>
+                </div>
 
-            <div className="w-8/12 flex ">
-              <NavLink
-                to="/user/notes"
-                className={`w-full text-base font-bold py-1 px-3 text-green-800 hover:bg-green-600 hover:text-white rounded  flex items-center gap-x-2 `}
-                onClick={() => dispatch(menuToggle())}
-              >
-                <MdEditDocument />
-                Notes
-              </NavLink>
-            </div>
-            <div className="w-8/12 flex ">
-              <NavLink
-                to="/user/todo_list"
-                className={`w-full text-base font-bold py-1 px-3 rounded text-green-800 hover:bg-green-600 hover:text-white flex items-center gap-x-2 `}
-                onClick={() => dispatch(menuToggle())}
-              >
-                <FaList />
-                Todo List
-              </NavLink>
-            </div>
-            <div className="w-8/12 flex ">
-              <NavLink
-                to="/about"
-                className="w-full text-base font-bold py-1 px-3 rounded text-green-800 hover:bg-green-600 hover:text-white flex items-center gap-x-2 "
-                onClick={() => dispatch(menuToggle())}
-              >
-                <BsInfoSquareFill />
-                About
-              </NavLink>
-            </div>
-            <div className="w-8/12 flex ">
-              <NavLink
-                to="/contact_us"
-                className="w-full text-base font-bold py-1 px-3 rounded text-green-800 hover:bg-green-600 hover:text-white flex items-center gap-x-2 "
-                onClick={() => dispatch(menuToggle())}
-              >
-                <IoMdMail />
-                Contact Us
-              </NavLink>
-            </div>
-            <div className="w-8/12 flex ">
-              <NavLink
-                to="/user/settings"
-                className="w-full text-base font-bold py-1 px-3 rounded text-green-800 hover:bg-green-600 hover:text-white flex items-center gap-x-2 "
-                onClick={() => dispatch(menuToggle())}
-              >
-                <IoSettingsSharp />
-                Settings
-              </NavLink>
-            </div>
-
+                <div className="w-8/12 flex ">
+                  <NavLink
+                    to="/user/notes"
+                    className={`w-full text-base font-bold py-1 px-3 text-green-800 hover:bg-green-600 hover:text-white rounded  flex items-center gap-x-2 `}
+                    onClick={() => dispatch(menuToggle())}
+                  >
+                    <MdEditDocument />
+                    Notes
+                  </NavLink>
+                </div>
+                <div className="w-8/12 flex ">
+                  <NavLink
+                    to="/user/todo_list"
+                    className={`w-full text-base font-bold py-1 px-3 rounded text-green-800 hover:bg-green-600 hover:text-white flex items-center gap-x-2 `}
+                    onClick={() => dispatch(menuToggle())}
+                  >
+                    <FaList />
+                    Todo List
+                  </NavLink>
+                </div>
+                <div className="w-8/12 flex ">
+                  <NavLink
+                    to="/about"
+                    className="w-full text-base font-bold py-1 px-3 rounded text-green-800 hover:bg-green-600 hover:text-white flex items-center gap-x-2 "
+                    onClick={() => dispatch(menuToggle())}
+                  >
+                    <BsInfoSquareFill />
+                    About
+                  </NavLink>
+                </div>
+                <div className="w-8/12 flex ">
+                  <NavLink
+                    to="/contact_us"
+                    className="w-full text-base font-bold py-1 px-3 rounded text-green-800 hover:bg-green-600 hover:text-white flex items-center gap-x-2 "
+                    onClick={() => dispatch(menuToggle())}
+                  >
+                    <IoMdMail />
+                    Contact Us
+                  </NavLink>
+                </div>
+                <div className="w-8/12 flex ">
+                  <NavLink
+                    to="/user/settings"
+                    className="w-full text-base font-bold py-1 px-3 rounded text-green-800 hover:bg-green-600 hover:text-white flex items-center gap-x-2 "
+                    onClick={() => dispatch(menuToggle())}
+                  >
+                    <IoSettingsSharp />
+                    Settings
+                  </NavLink>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="w-full pt-12 flex flex-col justify-center gap-y-3 md:gap-y-5 items-center ">
+                  <div className="w-8/12 flex ">
+                    <NavLink
+                      to="/user/signup"
+                      className={`w-full text-base font-bold py-1 px-3 rounded text-green-800 hover:bg-green-600 hover:text-white flex items-center gap-x-2 justify-center `}
+                      onClick={() => dispatch(menuToggle())}
+                    >
+                      {/* <FaList /> */}
+                      Sign Up
+                    </NavLink>
+                  </div>
+                  <div className="w-8/12 flex ">
+                    <NavLink
+                      to="/user/login"
+                      className={`w-full text-base font-bold py-1 px-3 rounded text-green-800 hover:bg-green-600 hover:text-white flex items-center justify-center gap-x-2 `}
+                      onClick={() => dispatch(menuToggle())}
+                    >
+                      {/* <FaList /> */}
+                      Log in
+                    </NavLink>
+                  </div>
+                </div>
+              </>
+            )}
             <div className="w-full flex flex-col gap-y-2 items-center mt-6 ">
               <hr className="border border-green-700 mb-3 w-full" />
               <div className="text-xl text-green-700 font-bold">Follow Me</div>

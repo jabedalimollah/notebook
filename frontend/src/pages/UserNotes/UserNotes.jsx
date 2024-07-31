@@ -14,6 +14,7 @@ import NotesView from "@/components/NotesView/NotesView";
 import { GetUserData } from "@/utils/userApiCall";
 import { FaLock } from "react-icons/fa6";
 import { IoMdLock } from "react-icons/io";
+import { MdOutlineErrorOutline } from "react-icons/md";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -151,7 +152,7 @@ const UserNotes = () => {
               {/* ================= Create Notes ============= */}
               <div>
                 <NavLink
-                  to="/user/create_notest"
+                  to="/user/create_notes"
                   className={`bg-green-700 hover:bg-green-900 text-white py-3 md:py-2 px-3 rounded flex items-center gap-x-1`}
                 >
                   <MdEditSquare />
@@ -244,73 +245,82 @@ const UserNotes = () => {
               </div>
             </div>
             {/* ======================= All Notes From User ================ */}
-            <div className="w-full ">
-              <div
-                className={`w-full grid ${
-                  userDetails.gridView === "list"
-                    ? "grid-cols-1 "
-                    : userDetails.gridView === "grid"
-                    ? "grid-cols-3"
-                    : "grid-cols-2"
-                } gap-2 p-4`}
-              >
-                {/* <div className="w-full grid grid-cols-3 gap-2 p-4"> */}
-                {data.map((item, index) => (
-                  <div
-                    className={`w-full  p-5 rounded-lg ${
-                      userDetails.themeColor || "bg-green-100"
-                    } shadow-xls shadow-lg`}
-                    // className="w-full  p-5 rounded-lg bg-green-100 shadow-xls shadow-lg"
-                    key={index}
-                  >
-                    <h1 className="text-base md:text-2xl font-bold truncate text-green-700">
-                      {/* {item.title} */}
-                      {item.isPasswordProtected ? (
-                        <span className="flex gap-x-1 text-gray-500 font-bold items-center text-sm md:text-2xl">
-                          {/* <FaLock /> */}
-                          <IoMdLock className="self-center " />
-                          Locked
-                        </span>
-                      ) : (
-                        item.title
-                      )}
-                    </h1>
-                    <p className="truncate text-green-700 text-sm md:text-base">
-                      {item.isPasswordProtected ? (
-                        <span className="flex  gap-x-0.5 items-center">
-                          <IoMdLock />
-                          This notes is protected
-                        </span>
-                      ) : (
-                        item.text
-                      )}
-                      {/* {item.text} */}
-                    </p>
+            {data.length === 0 ? (
+              <div className="flex justify-center items-center w-full mt-10">
+                <div className="flex flex-col items-center">
+                  {/* <MdOutlineErrorOutline className="text-2xl text-yellow-600" /> */}
+                  No notes found
+                </div>
+              </div>
+            ) : (
+              <div className="w-full ">
+                <div
+                  className={`w-full grid ${
+                    userDetails.gridView === "list"
+                      ? "grid-cols-1 "
+                      : userDetails.gridView === "grid"
+                      ? "grid-cols-3"
+                      : "grid-cols-2"
+                  } gap-2 p-4`}
+                >
+                  {/* <div className="w-full grid grid-cols-3 gap-2 p-4"> */}
+                  {data.map((item, index) => (
+                    <div
+                      className={`w-full  p-5 rounded-lg ${
+                        userDetails.themeColor || "bg-green-100"
+                      } shadow-xls shadow-lg`}
+                      // className="w-full  p-5 rounded-lg bg-green-100 shadow-xls shadow-lg"
+                      key={index}
+                    >
+                      <h1 className="text-base md:text-2xl font-bold truncate text-green-700">
+                        {/* {item.title} */}
+                        {item.isPasswordProtected ? (
+                          <span className="flex gap-x-1 text-gray-500 font-bold items-center text-sm md:text-2xl">
+                            {/* <FaLock /> */}
+                            <IoMdLock className="self-center " />
+                            Locked
+                          </span>
+                        ) : (
+                          item.title
+                        )}
+                      </h1>
+                      <p className="truncate text-green-700 text-sm md:text-base">
+                        {item.isPasswordProtected ? (
+                          <span className="flex  gap-x-0.5 items-center">
+                            <IoMdLock />
+                            This notes is protected
+                          </span>
+                        ) : (
+                          item.text
+                        )}
+                        {/* {item.text} */}
+                      </p>
 
-                    <div className="w-full flex justify-between mt-2">
-                      <NavLink
-                        to={`/user/update_notes/${item._id}`}
-                        className="flex items-center gap-x-1 text-gray-600 border border-gray-500  shadow-gray-300 shadow-md  px-1.5 py-1 md:py-0.5 rounded hover:bg-gray-500 hover:text-white"
-                      >
-                        <RiEdit2Fill />
-                        <span className="hidden md:inline-block">Edit</span>
-                      </NavLink>
-                      <button
-                        onClick={() => handleDeleteBtn(item._id)}
-                        className="flex items-center gap-x-1 text-red-400 border shadow-gray-300 shadow-md border-red-400 px-1.5 py-1 md:py-0.5 rounded hover:bg-red-400 hover:text-white"
-                      >
-                        <RiDeleteBin5Fill />
-                        <span className="hidden md:inline-block">Delete</span>
-                      </button>
+                      <div className="w-full flex justify-between mt-2">
+                        <NavLink
+                          to={`/user/update_notes/${item._id}`}
+                          className="flex items-center gap-x-1 text-gray-600 border border-gray-500  shadow-gray-300 shadow-md  px-1.5 py-1 md:py-0.5 rounded hover:bg-gray-500 hover:text-white"
+                        >
+                          <RiEdit2Fill />
+                          <span className="hidden md:inline-block">Edit</span>
+                        </NavLink>
+                        <button
+                          onClick={() => handleDeleteBtn(item._id)}
+                          className="flex items-center gap-x-1 text-red-400 border shadow-gray-300 shadow-md border-red-400 px-1.5 py-1 md:py-0.5 rounded hover:bg-red-400 hover:text-white"
+                        >
+                          <RiDeleteBin5Fill />
+                          <span className="hidden md:inline-block">Delete</span>
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
-                {/* <div className="w-full  p-5 rounded-lg bg-green-100 shadow-xls border border-black">
+                  ))}
+                  {/* <div className="w-full  p-5 rounded-lg bg-green-100 shadow-xls border border-black">
                   <h1 className="text-2xl font-bold">Title</h1>
                   <p>This is my first notes</p>
                 </div> */}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

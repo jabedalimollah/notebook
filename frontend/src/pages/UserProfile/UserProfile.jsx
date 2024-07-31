@@ -61,6 +61,7 @@ const UserProfile = () => {
   const handleLogOutBtn = () => {
     localStorage.removeItem("notebookToken");
     navigate("/user/login");
+    window.location.reload();
   };
   useEffect(() => {
     handleApiCalling();

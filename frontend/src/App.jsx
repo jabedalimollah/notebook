@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { Button } from "@/components/ui/button";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import Signup from "./pages/Signup/Signup";
 import Navbar from "./common/Navbar/Navbar";
 import Login from "./pages/Login/Login";
@@ -16,32 +16,55 @@ import TodoList from "./pages/TodoList/TodoList";
 import About from "./pages/About/About";
 import ContactUs from "./pages/ContactUs/ContactUs";
 import CreateUpdateNotes from "./components/CreateUpdateNotes/CreateUpdateNotes";
+// const login = localStorage.getItem("notebookToken");
 function App() {
+  const [auth, setAuth] = useState(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const login = localStorage.getItem("notebookToken");
+    // const login = JSON.parse(localStorage.getItem("items"));
+
+    if (login) {
+      // const login1 = localStorage.getItem("notebookToken");
+      navigate("/user/notes");
+      // console.log(login);
+      setAuth(login);
+    } else {
+      navigate("/user/login");
+    }
+  }, []);
   return (
     <>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<h1>Home</h1>} />
+      {/* <BrowserRouter> */}
+      <Navbar />
+      <Routes>
+        {auth ? (
+          <>
+            <Route path="/" element={<h1>Home</h1>} />
 
-          <Route path="/user/signup" element={<Signup />} />
-          <Route path="/user/login" element={<Login />} />
-          <Route path="/user/forgot_password" element={<ForgotPassword />} />
-          <Route path="/user/profile" element={<UserProfile />} />
-          <Route path="/user/edit_profile" element={<EditProfile />} />
-          <Route path="/user/settings" element={<UserProfileSettings />} />
+            <Route path="/user/profile" element={<UserProfile />} />
+            <Route path="/user/edit_profile" element={<EditProfile />} />
+            <Route path="/user/settings" element={<UserProfileSettings />} />
 
-          <Route path="/user/notes" element={<UserNotes />} />
-          <Route path="/user/create_notest" element={<CreateUpdateNotes />} />
-          <Route path="/user/todo_list" element={<TodoList />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact_us" element={<ContactUs />} />
-          <Route
-            path="/user/update_notes/:notes_id"
-            element={<CreateUpdateNotes />}
-          />
-        </Routes>
-      </BrowserRouter>
+            <Route path="/user/notes" element={<UserNotes />} />
+            <Route path="/user/create_notes" element={<CreateUpdateNotes />} />
+            <Route path="/user/todo_list" element={<TodoList />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact_us" element={<ContactUs />} />
+            <Route
+              path="/user/update_notes/:notes_id"
+              element={<CreateUpdateNotes />}
+            />
+          </>
+        ) : (
+          <>
+            <Route path="/user/forgot_password" element={<ForgotPassword />} />
+            <Route path="/user/signup" element={<Signup />} />
+            <Route path="/user/login" element={<Login />} />
+          </>
+        )}
+      </Routes>
+      {/* </BrowserRouter> */}
     </>
   );
 }

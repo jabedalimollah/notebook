@@ -146,6 +146,7 @@ const Signup = () => {
 
       // navigate("/");
       navigate("/user/notes");
+      window.location.reload();
     } catch (error) {
       // console.log("err", error.response.data.message);
       if (error.response.data.message === "username already exists") {
