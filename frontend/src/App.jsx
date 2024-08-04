@@ -16,6 +16,7 @@ import TodoList from "./pages/TodoList/TodoList";
 import About from "./pages/About/About";
 import ContactUs from "./pages/ContactUs/ContactUs";
 import CreateUpdateNotes from "./components/CreateUpdateNotes/CreateUpdateNotes";
+import "react-toastify/dist/ReactToastify.css";
 // const login = localStorage.getItem("notebookToken");
 function App() {
   const [auth, setAuth] = useState(null);

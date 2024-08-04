@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { getData } from "@/features/user/userSlice";
 import { apiRoutes } from "@/utils/apiRoutes";
+import { ToastContainer, toast } from "react-toastify";
 
 // const countryData =
 //   "https://raw.githubusercontent.com/devopsdeveloper1107/Country-state-city-table-in-json/main/Country-State-Data-In-JSON";
@@ -144,6 +145,9 @@ const EditProfile = () => {
       );
       dispatch(getData(response.data.data));
       setData(response.data.data);
+      toast.success("Profile Update Successfully", {
+        position: "top-center",
+      });
     } catch (error) {
       // console.log(error.response.data.message);
       setValidationMessage(error.response.data.message);
@@ -473,6 +477,7 @@ const EditProfile = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };
