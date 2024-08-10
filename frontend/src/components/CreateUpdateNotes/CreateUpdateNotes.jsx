@@ -3,6 +3,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoIosSave } from "react-icons/io";
+import { FaFileImport } from "react-icons/fa6";
 import { jwtDecode } from "jwt-decode";
 import { PostNotes, FindNotes, UpdateNotesData } from "@/utils/notesApiCalling";
 import { FaFileExport } from "react-icons/fa";
@@ -192,6 +193,24 @@ const CreateUpdateNotes = () => {
     setCurrentDate({ date, time });
   };
 
+  // ======================= Handle Import File =====================
+  const handleImportFile = (e) => {
+    // let fileData = new FileReader();
+    // fileData.readAsText(e.files[0]);
+    // fileData.onload = function () {
+    //   console.log(fileData.result);
+    // };
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const text = e.target.result;
+      // console.log(text);
+      setData({ ...data, text: text });
+      // alert(text)
+    };
+    reader.readAsText(e.target.files[0]);
+  };
+
   // =================== Export Txt file Button ==================
   const handleExportTxtFile = () => {
     const value = { title: data.title, text: data.text };
@@ -199,8 +218,8 @@ const CreateUpdateNotes = () => {
 
     const file = new Blob(
       [
-        document.getElementById("title").value,
-        "\n",
+        // document.getElementById("title").value,
+        // "\n",
         document.getElementById("text").value,
       ],
       { type: "text/plain;charset=utf-8" }
@@ -223,7 +242,7 @@ const CreateUpdateNotes = () => {
       format: [297, 210], // A4 page size in mm
     });
     doc.setFontSize(12);
-    doc.text(`${data.title}\n${data.text}`, 10, 10);
+    doc.text(`${data.text}`, 10, 10);
     doc.save("My_Notebook_File.pdf");
   };
 
@@ -354,6 +373,33 @@ const CreateUpdateNotes = () => {
                     {optionBtn ? (
                       <PopoverContent className={`flex flex-col bg-green-100 `}>
                         {/* <div className="flex flex-col absolute top-24 right-12 bg-green-300 p-14 "> */}
+
+                        {!notes_id ? (
+                          // <label
+                          <label
+                            variant="text"
+                            htmlFor="import_file"
+                            // onClick={handleExportPdfFile}
+                            className={`text-base py-2 px-3 rounded-md flex justify-start items-center hover:bg-green-700 hover:text-white  relative outline-none `}
+                          >
+                            <input
+                              type="file"
+                              id="import_file"
+                              name="import_file"
+                              accept=".txt"
+                              onChange={handleImportFile}
+                              className="invisible w-full outline-none"
+                            />{" "}
+                            <span className="absolute w-full  flex items-center  gap-x-3">
+                              {" "}
+                              <FaFileImport className="text-sm" />
+                              Import txt
+                              {/* <BiSolidFileImport /> */}
+                            </span>
+                          </label>
+                        ) : (
+                          ""
+                        )}
 
                         <Button
                           variant="text"
