@@ -7,6 +7,7 @@ import styles from "../../styles/login/login.module.css";
 import { apiRoutes } from "@/utils/apiRoutes";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import { getData } from "@/features/user/userSlice";
 const Login = () => {
   // -------------------- State Start ------------------------
@@ -57,10 +58,12 @@ const Login = () => {
           "Content-Type": "application/json",
         },
       });
-      // console.log("res", response.data.token);
-      // dispatch(getData(response.data.data._id));
+
       localStorage.setItem("notebookToken", response.data.token);
       setMessage(false);
+      toast.success("Login Successfully", {
+        position: "top-center",
+      });
       // navigate("/");
       navigate("/user/notes");
       window.location.reload();
@@ -87,12 +90,7 @@ const Login = () => {
             {message ? (
               <div className={`${styles.div_wrapper}`}>
                 {/* ===================== Email ======================= */}
-                {/* <div className={`${styles.form_input_box}`}>
-                <label htmlFor="" className={`${styles.form_data_wrapper}`}> */}
-                {/* <span className={`${styles.input_title}`}>Email</span> */}
                 <span className={`${styles.message}`}>User doesn't exist</span>
-                {/* </label>
-              </div> */}
               </div>
             ) : null}
             <div className={`${styles.div_wrapper}`}>
@@ -117,23 +115,6 @@ const Login = () => {
             </div>
 
             <div className={`${styles.div_wrapper}`}>
-              {/* ===================== Password ======================= */}
-              {/* <div className={`${styles.form_input_box}`}>
-                <label htmlFor="" className={`${styles.form_data_wrapper}`}>
-                  <span className={`${styles.input_title}`}>Password</span>
-
-                  <input
-                    type="password"
-                    placeholder="Enter your password"
-                    className={`${styles.input_box}`}
-                  />
-                </label>
-                {false ? (
-                  <span className={`${styles.invalid_user}`}>
-                    Enter password
-                  </span>
-                ) : null}
-              </div> */}
               {/* ===================== Password ======================= */}
               <div className={`${styles.form_input_box}`}>
                 <label htmlFor="" className={`${styles.form_data_wrapper}`}>
@@ -206,6 +187,7 @@ const Login = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

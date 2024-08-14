@@ -6,6 +6,7 @@ import { HiEyeOff } from "react-icons/hi";
 import { HiEye } from "react-icons/hi";
 import axios from "axios";
 import { apiRoutes } from "@/utils/apiRoutes";
+import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { getData } from "@/features/user/userSlice";
 // const baseURL = "http://localhost:8000/api/v1/user/signup";
@@ -145,6 +146,9 @@ const Signup = () => {
       localStorage.setItem("notebookToken", response.data.token);
 
       // navigate("/");
+      toast.success("Signup Successfully", {
+        position: "top-center",
+      });
       navigate("/user/notes");
       window.location.reload();
     } catch (error) {
@@ -389,133 +393,9 @@ const Signup = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };
 
 export default Signup;
-
-// name
-// username
-// email
-// password
-
-<div className={`${styles.main}`}>
-  <div className={`${styles.signup_container}`}>
-    <div className={`${styles.logo_box}`}>
-      <img src={logo} alt="logo" srcset="" className={`${styles.logo}`} />
-    </div>
-    <h2 className={`${styles.form_title}`}>Create your Account</h2>
-    <form action="" className={`${styles.signup_form}`}>
-      <div className={`${styles.div_wrapper}`}>
-        {/* ===================== Full Name ======================= */}
-        <div className={`${styles.form_input_box}`}>
-          <label htmlFor="" className={`${styles.form_data_wrapper}`}>
-            <span className={`${styles.input_title}`}>Full Name</span>
-            <input
-              type="text"
-              placeholder="Enter your name"
-              className={`${styles.input_box}`}
-            />
-          </label>
-          {false ? (
-            <span className={`${styles.invalid_user}`}>*Enter Full Name</span>
-          ) : null}
-        </div>
-
-        {/* ===================== username ======================= */}
-        <div className={`${styles.form_input_box}`}>
-          <label htmlFor="" className={`${styles.form_data_wrapper}`}>
-            <span className={`${styles.input_title}`}>Username</span>
-            <input
-              type="text"
-              placeholder="Enter your username"
-              className={`${styles.input_box}`}
-            />
-          </label>
-          {false ? (
-            <span className={`${styles.invalid_user}`}>Enter username</span>
-          ) : null}
-        </div>
-      </div>
-
-      <div className={`${styles.div_wrapper}`}>
-        {/* ===================== Email ======================= */}
-        <div className={`${styles.form_input_box}`}>
-          <label htmlFor="" className={`${styles.form_data_wrapper}`}>
-            <span className={`${styles.input_title}`}>Email</span>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className={`${styles.input_box}`}
-            />
-          </label>
-          {false ? (
-            <span className={`${styles.invalid_user}`}>Enter email</span>
-          ) : null}
-        </div>
-
-        {/* ===================== Phone Number ======================= */}
-        <div className={`${styles.form_input_box}`}>
-          <label htmlFor="" className={`${styles.form_data_wrapper}`}>
-            <span className={`${styles.input_title}`}>Phone</span>
-            <input
-              type="number"
-              placeholder="Enter your phone number"
-              className={`${styles.input_box}`}
-            />
-          </label>
-          {false ? (
-            <span className={`${styles.invalid_user}`}>Enter phone number</span>
-          ) : null}
-        </div>
-      </div>
-
-      <div className={`${styles.div_wrapper}`}>
-        {/* ===================== Password ======================= */}
-        <div className={`${styles.form_input_box}`}>
-          <label htmlFor="" className={`${styles.form_data_wrapper}`}>
-            <span className={`${styles.input_title}`}>Password</span>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              className={`${styles.input_box}`}
-            />
-          </label>
-          {false ? (
-            <span className={`${styles.invalid_user}`}>
-              Enter minimum 8 charecter
-            </span>
-          ) : null}
-        </div>
-
-        {/* ===================== Confirm Password ======================= */}
-        <div className={`${styles.form_input_box}`}>
-          <label htmlFor="" className={`${styles.form_data_wrapper}`}>
-            <span className={`${styles.input_title}`}>Confirm Password</span>
-            <input
-              type="password"
-              placeholder="Confirm your password"
-              className={`${styles.input_box}`}
-            />
-          </label>
-          {false ? (
-            <span className={`${styles.invalid_user}`}>Confirm password</span>
-          ) : null}
-        </div>
-      </div>
-
-      <div className={`${styles.signup_box}`}>
-        <button className={`${styles.signup_button}`}>Create an account</button>
-      </div>
-      <div className={`${styles.login}`}>
-        <span className={`${styles.login_wrapper}`}>
-          Already have an account?{" "}
-          <Link to="/login" className={`${styles.login}`}>
-            Login here
-          </Link>
-        </span>
-      </div>
-    </form>
-  </div>
-</div>;

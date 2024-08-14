@@ -24,6 +24,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { IoIosCopy } from "react-icons/io";
 import useClipboard from "react-use-clipboard";
+import { ToastContainer, toast } from "react-toastify";
 
 // ============ JWT Token ===============
 const token = localStorage.getItem("notebookToken");
@@ -91,6 +92,12 @@ const CreateUpdateNotes = () => {
 
   // ============= handle Save Button =================
   const handleSaveBtn = async () => {
+    if (data.title === "") {
+      toast.info("Write Title", {
+        position: "top-center",
+      });
+    }
+
     if (notes_id) {
       if (!(data.title === "")) {
         let newData = await UpdateNotesData(notes_id, data);
@@ -509,6 +516,7 @@ const CreateUpdateNotes = () => {
           data={data}
         />
       )}
+      <ToastContainer />
     </>
   );
 };
