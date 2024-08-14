@@ -41,7 +41,7 @@ function App() {
       <Routes>
         {auth ? (
           <>
-            <Route path="/" element={<h1>Home</h1>} />
+            <Route path="/" element={<h1>Page Not Found</h1>} />
 
             <Route path="/user/profile" element={<UserProfile />} />
             <Route path="/user/edit_profile" element={<EditProfile />} />
