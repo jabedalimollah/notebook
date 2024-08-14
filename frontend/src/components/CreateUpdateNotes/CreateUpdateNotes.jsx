@@ -380,7 +380,7 @@ const CreateUpdateNotes = () => {
                             variant="text"
                             htmlFor="import_file"
                             // onClick={handleExportPdfFile}
-                            className={`text-base py-2 px-3 rounded-md flex justify-start items-center hover:bg-green-700 hover:text-white  relative outline-none `}
+                            className={`text-sm py-2 px-3 rounded-md flex justify-start items-center hover:bg-green-700 hover:text-white  relative outline-none `}
                           >
                             <input
                               type="file"
@@ -393,7 +393,7 @@ const CreateUpdateNotes = () => {
                             <span className="absolute w-full  flex items-center  gap-x-3">
                               {" "}
                               <FaFileImport className="text-sm" />
-                              Import txt
+                              Import Text File
                               {/* <BiSolidFileImport /> */}
                             </span>
                           </label>
@@ -406,21 +406,23 @@ const CreateUpdateNotes = () => {
                           onClick={handleExportPdfFile}
                           className={`flex justify-start gap-x-2 hover:bg-green-700 hover:text-white`}
                         >
-                          <FaFileExport /> Export PDF
+                          <FaFileExport /> Export PDF File
                         </Button>
                         <Button
                           variant="text"
                           onClick={handleExportTxtFile}
                           className={`flex justify-start gap-x-2 hover:bg-green-700 hover:text-white`}
                         >
-                          <FaFileExport /> Export txt
+                          <FaFileExport /> Export Text File
                         </Button>
                         <Button
                           onClick={handlelockBtn}
                           variant="text"
                           className={`flex justify-start gap-x-2  hover:bg-green-700 hover:text-white`}
                         >
-                          <IoMdLock /> Lock
+                          <IoMdLock />
+                          {/* Lock */}
+                          Protect Notes
                         </Button>
                         <Button
                           variant="text"
