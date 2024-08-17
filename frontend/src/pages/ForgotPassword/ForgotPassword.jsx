@@ -70,7 +70,7 @@ const ForgotPassword = () => {
       });
       //   console.log(response.data);
       setMessage(false);
-      navigate("/user/login");
+      navigate("/user/profile");
     } catch (error) {
       //   console.log(error.response.data.message);
       if (error.response.data.message === "user not found") {
@@ -221,10 +221,11 @@ const ForgotPassword = () => {
             <div className={`${styles.login}`}>
               <span className={`${styles.login_wrapper}`}>
                 {/* Don’t have an account yet?{" "} */}
-                <Link to="/user/login" className={`${styles.login}`}>
+                <Link to="/user/profile" className={`${styles.login}`}>
+                  {/* <Link to="/user/login" className={`${styles.login}`}> */}
                   {/* Sign up here */}
-                  {/* Back */}
-                  Return to Login Page
+                  Back
+                  {/* Return to Profile Page */}
                 </Link>
               </span>
             </div>

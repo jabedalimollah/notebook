@@ -159,7 +159,8 @@ const Login = () => {
                 </span>
               </label>
               <Link
-                to="/user/forgot_password"
+                to="/user/page_not_found"
+                // to="/user/forgot_password"
                 className={`${styles.forgot_password_text}`}
               >
                 Forgot password?

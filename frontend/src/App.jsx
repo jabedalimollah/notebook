@@ -17,6 +17,7 @@ import About from "./pages/About/About";
 import ContactUs from "./pages/ContactUs/ContactUs";
 import CreateUpdateNotes from "./components/CreateUpdateNotes/CreateUpdateNotes";
 import "react-toastify/dist/ReactToastify.css";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
 // const login = localStorage.getItem("notebookToken");
 function App() {
   const [auth, setAuth] = useState(null);
@@ -41,7 +42,7 @@ function App() {
       <Routes>
         {auth ? (
           <>
-            <Route path="/" element={<h1>Page Not Found</h1>} />
+            <Route path="/" element={<ErrorPage />} />
 
             <Route path="/user/profile" element={<UserProfile />} />
             <Route path="/user/edit_profile" element={<EditProfile />} />
@@ -56,14 +57,16 @@ function App() {
               path="/user/update_notes/:notes_id"
               element={<CreateUpdateNotes />}
             />
+            <Route path="/user/forgot_password" element={<ForgotPassword />} />
           </>
         ) : (
           <>
-            <Route path="/user/forgot_password" element={<ForgotPassword />} />
+            {/* <Route path="/user/forgot_password" element={<ForgotPassword />} /> */}
             <Route path="/user/signup" element={<Signup />} />
             <Route path="/user/login" element={<Login />} />
           </>
         )}
+        <Route path="/user/page_not_found" element={<ErrorPage />} />
       </Routes>
       {/* </BrowserRouter> */}
     </>

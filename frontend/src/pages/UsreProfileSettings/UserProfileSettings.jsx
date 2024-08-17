@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { RiDeleteBin7Fill } from "react-icons/ri";
@@ -15,6 +15,7 @@ const UserProfileSettings = () => {
   const handleBackBtn = () => {
     setBackBtn(!backBtn);
   };
+
   return (
     <>
       <div
@@ -36,6 +37,17 @@ const UserProfileSettings = () => {
           <h1 className="text-xl md:text-4xl lg:text-4xl mb-4 font-bold text-green-700">
             Settings
           </h1>
+
+          <div className="mt-3">
+            <NavLink
+              to="/user/forgot_password"
+              className={
+                "font-bold text-gray-600 borders border-gray-600 rounded-md hover:bg-gray-600 hover:text-white py-2 px-3"
+              }
+            >
+              Reset Password
+            </NavLink>
+          </div>
 
           {/* =========================== Delete Button  =========================== */}
           <div className=" flex flex-col items-center gap-y-4 w-11/12 md:w-8/12 lg:w-8/12 p-4 rounded-md">
