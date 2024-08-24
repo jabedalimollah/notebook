@@ -19,6 +19,7 @@ import { jwtDecode } from "jwt-decode";
 import { getData } from "@/features/user/userSlice";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { ToastContainer, toast } from "react-toastify";
+import Loading from "@/components/Loading/Loading";
 
 // const countryData =
 //   "https://raw.githubusercontent.com/devopsdeveloper1107/Country-state-city-table-in-json/main/Country-State-Data-In-JSON";
@@ -39,6 +40,7 @@ const EditProfile = () => {
     state: "",
   });
   const [validationMessage, setValidationMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const userData = useSelector((state) => state.user.value);
 
   // ----------------------- State End -----------------------
@@ -121,12 +123,12 @@ const EditProfile = () => {
     try {
       const token = localStorage.getItem("notebookToken");
       const user = token ? jwtDecode(token) : null;
-
+      setLoading(true);
       const response = await axios.get(
         `${apiRoutes.userprofileURI}/${user._id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
+      setLoading(false);
       dispatch(getData(response.data.data));
       setData(response.data.data);
     } catch (error) {
@@ -138,17 +140,20 @@ const EditProfile = () => {
   const updateUserData = async (updateData) => {
     try {
       const token = localStorage.getItem("notebookToken");
+      setLoading(true);
       const response = await axios.put(
         `${apiRoutes.updateUserProfileURI}/${data._id}`,
         updateData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      setLoading(false);
       dispatch(getData(response.data.data));
       setData(response.data.data);
       toast.success("Profile Update Successfully", {
         position: "top-center",
       });
     } catch (error) {
+      setLoading(false);
       // console.log(error.response.data.message);
       setValidationMessage(error.response.data.message);
     }
@@ -161,6 +166,7 @@ const EditProfile = () => {
   }, []);
   return (
     <>
+      {loading ? <Loading /> : ""}
       <div
         className={`w-full md:h-screen lg:h-screen background_color flex justify-center items-center  box-border pt-10`}
       >

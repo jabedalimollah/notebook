@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import NotesThemeColors from "@/components/NotesThemeColors/NotesThemeColors";
 import { IoMdArrowDropdown } from "react-icons/io";
+import Loading from "@/components/Loading/Loading";
 
 const UserNotes = () => {
   // --------------- State Start ------------------
@@ -35,14 +36,16 @@ const UserNotes = () => {
   const [gridBtn, setGridBtn] = useState(false);
   const [userDetails, setUserDetails] = useState([]);
   const [themeColorBtn, setThemeColorBtn] = useState(false);
+  const [loading, setLoading] = useState(false);
   const notes = useSelector((state) => state.notes.value);
 
   // ------------------ State End -----------------
   const dispatch = useDispatch();
   const NotesData = async () => {
+    setLoading(true);
     setData(await GetNotes());
     // let rev = await GetNotes();
-
+    setLoading(false);
     // setData(rev.reverse());
     dispatch(allNotes(await GetNotes()));
     // console.log(await GetNotes());
@@ -73,7 +76,9 @@ const UserNotes = () => {
   const handleDeleteBtn = async (id) => {
     setDeleteBtn(!deleteBtn);
     setNotesId(id);
+
     setData(await GetNotes());
+
     // let rev = await GetNotes();
 
     // setData(rev.reverse());
@@ -82,8 +87,12 @@ const UserNotes = () => {
   // ---------------------- Theme Colors Button ----------------
   const handleThemeColor = (response) => {
     setThemeColorBtn(!themeColorBtn);
-    handleApiCalling();
-    setUserDetails(response);
+
+    // handleApiCalling();
+
+    if (response._id) {
+      setUserDetails(response);
+    }
   };
 
   // ---------------- Theme Color Back Button ---------------
@@ -120,15 +129,25 @@ const UserNotes = () => {
   };
 
   // ------------------- Grid Button --------------
-  const handleGridBtn = async () => {
+  const handleGridBtn = async (response) => {
     setGridBtn(!gridBtn);
-    let userData = await GetUserData();
-    setUserDetails(userData);
+    if (response._id) {
+      setUserDetails(response);
+    }
+
+    // let userData = await GetUserData();
+
+    // setUserDetails(userData);
   };
 
   const handleApiCalling = async () => {
+    setLoading(true);
+
     let userData = await GetUserData();
+
+    setLoading(false);
     setUserDetails(userData);
+    // setLoading(false);
     // console.log(userData);
   };
 
@@ -143,6 +162,7 @@ const UserNotes = () => {
 
   return (
     <>
+      {loading ? <Loading /> : ""}
       <div className="w-full  flex flex-col box-border">
         <div className="w-full h-screen pt-10 flex ">
           {/* <div className="flex  h-dvh "> */}
@@ -245,7 +265,9 @@ const UserNotes = () => {
               </div>
             </div>
             {/* ======================= All Notes From User ================ */}
-            {data.length === 0 ? (
+            {loading ? (
+              <Loading />
+            ) : data.length === 0 ? (
               <div className="flex justify-center items-center w-full mt-10">
                 <div className="flex flex-col items-center">
                   {/* <MdOutlineErrorOutline className="text-2xl text-yellow-600" /> */}

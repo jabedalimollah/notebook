@@ -10,13 +10,17 @@ import { FaGithub } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
 import { FaGlobe } from "react-icons/fa";
 import { GetUserData } from "@/utils/userApiCall";
+import Loading from "@/components/Loading/Loading";
 // import { useSelector } from "react-redux";
 const SidebarMenu = () => {
   const [userData, setUserData] = useState([]);
+  const [loading, setLoading] = useState(false);
   // const menuBtn = useSelector((state) => state.menu.value);
 
   const userDataCalling = async () => {
+    setLoading(true);
     let data = await GetUserData();
+    setLoading(false);
     setUserData(data);
   };
   useEffect(() => {
@@ -24,6 +28,7 @@ const SidebarMenu = () => {
   }, []);
   return (
     <>
+      {loading ? <Loading /> : ""}
       <div
         className={`hidden lg:inline-block w-2/12 h-full shadow-2xl background_gradient_color `}
       >

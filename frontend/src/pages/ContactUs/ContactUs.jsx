@@ -11,13 +11,16 @@ import { FaGithub } from "react-icons/fa";
 import { BsTwitterX } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import { GetUserData } from "@/utils/userApiCall";
+import Loading from "@/components/Loading/Loading";
 
 const ContactUs = () => {
-  const [data, setData] = useState({});
-  const [date, setDate] = useState(null);
+  const [data, setData] = useState({}); // this is data
+  const [date, setDate] = useState(null); // this is date
+  const [loading, setLoading] = useState(false);
   const getApiData = async () => {
+    setLoading(true);
     let tempData = await GetUserData();
-
+    setLoading(false);
     setData(tempData);
   };
   const getCurrentYear = () => {
@@ -25,12 +28,14 @@ const ContactUs = () => {
 
     setDate(year.getFullYear());
   };
+
   useEffect(() => {
     getApiData();
     getCurrentYear();
   }, []);
   return (
     <>
+      {loading ? <Loading /> : ""}
       <div className="w-full  flex flex-col box-border">
         <div className="w-full h-auto lg:h-screen pt-10 flex ">
           <SidebarMenu />

@@ -26,6 +26,7 @@ const Navbar = () => {
 
   const userDataCalling = async () => {
     let data = token ? await GetUserData() : [];
+
     setUserData(data);
   };
 

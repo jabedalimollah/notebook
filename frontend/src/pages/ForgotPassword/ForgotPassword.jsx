@@ -6,6 +6,7 @@ import logo from "/notebook.png";
 import styles from "../../styles/forgotPassword/forgotPassword.module.css";
 import { apiRoutes } from "@/utils/apiRoutes";
 import axios from "axios";
+import Loading from "@/components/Loading/Loading";
 
 const ForgotPassword = () => {
   // ------------------------ State Start ----------------------
@@ -20,6 +21,7 @@ const ForgotPassword = () => {
   const [validConfirmPassword, setValidConfirmPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   //   --------------------- State End ----------------------
   const navigate = useNavigate();
@@ -63,15 +65,18 @@ const ForgotPassword = () => {
 
   const handleApiCalling = async (data) => {
     try {
+      setLoading(true);
       const response = await axios.put(apiRoutes.resetpasswordURI, data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
       //   console.log(response.data);
+      setLoading(false);
       setMessage(false);
       navigate("/user/profile");
     } catch (error) {
+      setLoading(false);
       //   console.log(error.response.data.message);
       if (error.response.data.message === "user not found") {
         setMessage(true);
@@ -80,6 +85,7 @@ const ForgotPassword = () => {
   };
   return (
     <>
+      {loading ? <Loading /> : ""}
       <div className={`${styles.main}`}>
         <div className={`${styles.password_reset_container}`}>
           <div className={`${styles.logo_box}`}>

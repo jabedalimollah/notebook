@@ -10,6 +10,7 @@ import { AiFillLock } from "react-icons/ai";
 import { apiRoutes } from "@/utils/apiRoutes";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import Loading from "@/components/Loading/Loading";
 const UserProfileSettings = () => {
   const [backBtn, setBackBtn] = useState(false);
   const handleBackBtn = () => {
@@ -77,6 +78,7 @@ const DeleteBtnComponent = ({ handleBackBtn }) => {
   const [password, setPassword] = useState("");
   const [passwordValidationMessage, setPasswordValidationMessage] =
     useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handlePasswordInput = (e) => {
     setPassword(e.target.value);
@@ -87,6 +89,7 @@ const DeleteBtnComponent = ({ handleBackBtn }) => {
       // console.log("pass", password);
       const token = localStorage.getItem("notebookToken");
       const user = token ? jwtDecode(token) : null;
+      setLoading(true);
       const response = await axios.delete(
         `${apiRoutes.deleteUserProfileURI}/${user._id}`,
 
@@ -97,6 +100,7 @@ const DeleteBtnComponent = ({ handleBackBtn }) => {
           },
         }
       );
+      setLoading(false);
       // console.log("res", response.data.statusInfo);
       if (response.data.statusInfo === "success") {
         setPasswordValidationMessage("");
@@ -105,6 +109,7 @@ const DeleteBtnComponent = ({ handleBackBtn }) => {
         navigate("/user/login");
       }
     } catch (error) {
+      setLoading(false);
       // console.log("err", error.response.data.message);
       setPasswordValidationMessage(error.response.data.message);
     }
@@ -116,6 +121,7 @@ const DeleteBtnComponent = ({ handleBackBtn }) => {
   };
   return (
     <>
+      {loading ? <Loading /> : ""}
       <div className="w-full h-dvh background_color z-10 fixed top-0 left-0 flex justify-center items-center">
         <div
           className={`w-10/12 md:w-10/12 lg:w-4/12 flex flex-col items-center py-5 md:py-10 lg:py-5 justify-center rounded-lg background_gradient_color box_shadow `}

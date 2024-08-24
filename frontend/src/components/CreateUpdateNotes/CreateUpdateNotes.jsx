@@ -25,6 +25,7 @@ import SpeechRecognition, {
 import { IoIosCopy } from "react-icons/io";
 import useClipboard from "react-use-clipboard";
 import { ToastContainer, toast } from "react-toastify";
+import Loading from "../Loading/Loading";
 
 // ============ JWT Token ===============
 const token = localStorage.getItem("notebookToken");
@@ -51,6 +52,7 @@ const CreateUpdateNotes = () => {
   const [lineHide, setLineHide] = useState(true);
   const [speakerBtn, setSpeakerBtn] = useState(false);
   const [micBtn, setMicBtn] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // ================= State End ========================
   const [isCopied, setCopied] = useClipboard(`${data.title}\n${data.text}`, {
@@ -72,8 +74,9 @@ const CreateUpdateNotes = () => {
 
   //   =============== Find Notes Data ==================
   const findNotesData = async () => {
+    setLoading(true);
     let existNotes = await FindNotes(notes_id);
-
+    setLoading(false);
     // ----------------- This is for "dd"/"mm"/"yyyy" format -----------------------
     let updateDate = existNotes.updatedAt
       .split("T")[0]
@@ -284,6 +287,7 @@ const CreateUpdateNotes = () => {
   }, []);
   return (
     <>
+      {loading ? <Loading /> : ""}
       {!passwordProtection ? (
         <>
           <div className="w-full  flex flex-col box-border">

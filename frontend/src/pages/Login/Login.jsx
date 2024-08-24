@@ -9,6 +9,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { getData } from "@/features/user/userSlice";
+import Loading from "@/components/Loading/Loading";
 const Login = () => {
   // -------------------- State Start ------------------------
   const [data, setData] = useState({
@@ -19,6 +20,7 @@ const Login = () => {
   const [validPassword, setValidPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState(false);
+  const [loading, setLoading] = useState(false);
   // ------------------ State End ------------------------
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,12 +55,13 @@ const Login = () => {
   };
   const handleApiCalling = async (data) => {
     try {
+      setLoading(true);
       const response = await axios.post(apiRoutes.loginURI, data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-
+      setLoading(false);
       localStorage.setItem("notebookToken", response.data.token);
       setMessage(false);
       toast.success("Login Successfully", {
@@ -68,6 +71,7 @@ const Login = () => {
       navigate("/user/notes");
       window.location.reload();
     } catch (error) {
+      setLoading(false);
       // console.log("err", error.response.data.message);
       if ("email or password doesn't exists" === error.response.data.message) {
         setMessage(true);
@@ -76,6 +80,7 @@ const Login = () => {
   };
   return (
     <>
+      {loading ? <Loading /> : ""}
       <div className={`${styles.main}`}>
         <div className={`${styles.login_container}`}>
           <div className={`${styles.logo_box}`}>

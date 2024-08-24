@@ -22,11 +22,13 @@ import { apiRoutes } from "@/utils/apiRoutes";
 import { jwtDecode } from "jwt-decode";
 import { getData } from "@/features/user/userSlice";
 import ChangeProfileImage from "@/components/ChangeProfileImage/ChangeProfileImage";
+import Loading from "@/components/Loading/Loading";
 // import image from "../../db.json";
 const UserProfile = () => {
   // ----------------------- State Start ---------------------
   // const [data, setData] = useState({});
   const [imageEditBtn, setImageEditBtn] = useState(false);
+  const [loading, setLoading] = useState(false);
   const data = useSelector((state) => state.user.value);
 
   // ------------------- State End --------------------
@@ -40,6 +42,7 @@ const UserProfile = () => {
       // console.log(user._id);
 
       // console.log(user._id);
+      setLoading(true);
       const response = await axios.get(
         `${apiRoutes.userprofileURI}/${user._id}`,
         { headers: { Authorization: `Bearer ${token}` } }
@@ -49,9 +52,11 @@ const UserProfile = () => {
       //   { headers: { Authorization: `Bearer ${token}` } }
       // );
       // console.log("res", response.data.data);
+      setLoading(false);
       dispatch(getData(response.data.data));
       // setData(response.data.data);
     } catch (error) {
+      setLoading(false);
       console.log("err", error);
     }
   };
@@ -69,6 +74,7 @@ const UserProfile = () => {
 
   return (
     <>
+      {loading ? <Loading /> : ""}
       <div
         className={`w-full md:h-screen lg:h-screen pt-10 box-border background_color `}
       >

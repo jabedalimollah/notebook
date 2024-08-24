@@ -9,6 +9,7 @@ import { apiRoutes } from "@/utils/apiRoutes";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { getData } from "@/features/user/userSlice";
+import Loading from "@/components/Loading/Loading";
 // const baseURL = "http://localhost:8000/api/v1/user/signup";
 const Signup = () => {
   // 🚀🚀🚀🚀 ---------------- State Start -------------------------
@@ -16,6 +17,7 @@ const Signup = () => {
   // ============= show hide password ============
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   // =============== store input data ==================
   const [data, setData] = useState({
     name: "",
@@ -38,6 +40,9 @@ const Signup = () => {
   const [usernamevalidationMessage, setUsernameValidationMessage] =
     useState("");
   const [emailvalidationMessage, setEmailValidationMessage] = useState("");
+
+  // ================= Loading State ===============
+  const [loading, setLoading] = useState(false);
 
   // 🚀🚀🚀🚀 ---------------- State End -------------------------
   // ============== dispatch ===========
@@ -132,12 +137,14 @@ const Signup = () => {
   // ==================== API Calling =============
   const handleApiCalling = async (sendData) => {
     try {
+      setLoading(true);
       const response = await axios.post(apiRoutes.signupURI, sendData, {
         // const response = await axios.post(baseURL, sendData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+      setLoading(false);
       // const subData = await response.data;
       // console.log(response.data);
       // console.log(response.data.token);
@@ -153,6 +160,7 @@ const Signup = () => {
       window.location.reload();
     } catch (error) {
       // console.log("err", error.response.data.message);
+      setLoading(false);
       if (error.response.data.message === "username already exists") {
         setUsernameValidationMessage(error.response.data.message);
       } else {
@@ -173,6 +181,7 @@ const Signup = () => {
   useEffect(() => {}, []);
   return (
     <>
+      {loading ? <Loading /> : ""}
       <div className={`${styles.main}`}>
         <div className={`${styles.signup_container}`}>
           <div className={`${styles.logo_box}`}>
